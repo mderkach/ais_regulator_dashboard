@@ -15,6 +15,11 @@ export default [
     view: 'UserProfile',
   },
   {
+    path: '/monitor-car',
+    name: 'Доступные трнаспортные стредства',
+    view: 'Monitoring--Car',
+  },
+  {
     path: '/table-list',
     name: 'Table List',
     view: 'TableList',

@@ -36,19 +36,45 @@
     <v-list nav>
       <!-- Bug in Vuetify for first child of v-list not receiving proper border-radius -->
       <div />
-
-      <v-list-item
+      <div
         v-for="(link, i) in links"
         :key="i"
-        :to="link.to"
-        active-class="primary white--text"
+        class="nav-links"
       >
-        <v-list-item-action>
-          <v-icon>{{ link.icon }}</v-icon>
-        </v-list-item-action>
+        <v-list-group
+          v-if="link.subMenu"
+          :prepend-icon="link.icon"
+        >
+          <template v-slot:activator>
+            <v-list-item-title>{{ link.text }}</v-list-item-title>
+          </template>
+          <v-list-item
+            v-for="(subLink, j) in link.subMenu"
+            :key="j"
+            :to="subLink.to"
+            active-class="primary white--text"
+          >
+            <!-- <v-list-item-action>
+              <v-icon>{{ subLink.icon }}</v-icon>
+            </v-list-item-action> -->
 
-        <v-list-item-title v-text="link.text" />
-      </v-list-item>
+            <v-list-item-title
+              v-text="subLink.text"
+            />
+          </v-list-item>
+        </v-list-group>
+        <v-list-item
+          v-else
+          :to="link.to"
+          active-class="primary white--text"
+        >
+          <v-list-item-action>
+            <v-icon>{{ link.icon }}</v-icon>
+          </v-list-item-action>
+
+          <v-list-item-title v-text="link.text" />
+        </v-list-item>
+      </div>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -76,6 +102,22 @@
           icon: 'mdi-map-marker',
           text: 'Данные',
         },
+        {
+          icon: 'mdi-laptop-chromebook',
+          text: 'Мониторинг',
+          subMenu: [
+            {
+              to: '/monitor-car',
+              icon: 'mdi-laptop-chromebook',
+              text: 'Транспортные средства',
+            },
+            {
+              to: '/monitor-ct',
+              icon: 'mdi-gps-fixed',
+              text: 'Контрольные точки',
+            },
+          ],
+        },
 
       ],
     }),
@@ -94,6 +136,9 @@
 
     methods: {
       ...mapMutations('app', ['setDrawer', 'toggleDrawer']),
+      openSubMenu (e) {
+        console.log(e)
+      },
     },
   }
 </script>
