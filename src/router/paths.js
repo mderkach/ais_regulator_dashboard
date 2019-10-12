@@ -20,6 +20,11 @@ export default [
     view: 'Monitoring--Car',
   },
   {
+    path: '/monitor-ct',
+    name: 'Управление контрольными точками',
+    view: 'Monitoring--CT',
+  },
+  {
     path: '/table-list',
     name: 'Table List',
     view: 'TableList',

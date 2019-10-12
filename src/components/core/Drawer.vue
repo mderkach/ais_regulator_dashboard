@@ -2,6 +2,7 @@
   <v-navigation-drawer
     id="app-drawer"
     v-model="inputValue"
+    style="z-index: 500"
     app
     color="grey darken-2"
     dark
@@ -108,12 +109,10 @@
           subMenu: [
             {
               to: '/monitor-car',
-              icon: 'mdi-laptop-chromebook',
               text: 'Транспортные средства',
             },
             {
               to: '/monitor-ct',
-              icon: 'mdi-gps-fixed',
               text: 'Контрольные точки',
             },
           ],

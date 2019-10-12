@@ -2,4 +2,7 @@
 
 export default {
   geolocation: state => state.geolocation,
+  sessionID: state => state.sessionID,
+  cars: state => state.cars,
+  carsGeo: state => state.carsGeo,
 }

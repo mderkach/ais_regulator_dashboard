@@ -9,6 +9,7 @@ import { sync } from 'vuex-router-sync'
 sync(store, router)
 
 Vue.config.productionTip = false
+export const userLocationBus = new Vue()
 
 new Vue({
   router,

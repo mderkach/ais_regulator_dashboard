@@ -2,4 +2,7 @@
 
 export default {
   geolocation: [],
+  sessionID: '',
+  cars: [],
+  carsGeo: [],
 }

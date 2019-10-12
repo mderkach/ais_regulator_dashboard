@@ -4,4 +4,13 @@ export default {
   setGeolocation (state, payload) {
     state.geolocation = payload
   },
+  setSessionID (state, payload) {
+    state.sessionID = payload
+  },
+  setCarsArray (state, payload) {
+    state.cars = payload
+  },
+  setCarsGeoArray (state, payload) {
+    state.carsGeo = payload
+  },
 }
