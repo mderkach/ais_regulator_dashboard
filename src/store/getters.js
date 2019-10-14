@@ -5,4 +5,5 @@ export default {
   sessionID: state => state.sessionID,
   cars: state => state.cars,
   carsGeo: state => state.carsGeo,
+  carMapCenter: state => state.carMapCenter,
 }

@@ -1,0 +1,35 @@
+.map-sidebar-wrapper{
+  position: absolute;
+  z-index: 400;
+  max-height: calc(100% - 10px);
+  width: 300px;
+  top: 10px;
+  transition: left ease-in-out 1s, right ease-in-out 1s;
+  overflow-y: scroll;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
+
+  & .sidebar-div {
+    margin-bottom: 20px;
+  }
+
+  &-left {
+    left: -350px;
+
+    &.side-active {
+      left: 10px;
+    }
+  }
+
+  &-right {
+    right: -350px;
+
+    &.side-active {
+      right: 10px;
+    }
+    
+  }
+}

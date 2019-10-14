@@ -13,4 +13,7 @@ export default {
   setCarsGeoArray (state, payload) {
     state.carsGeo = payload
   },
+  setNewCarMapCenter (state, payload) {
+    state.carMapCenter = payload
+  },
 }

@@ -3,7 +3,7 @@
     id="core-app-bar"
     absolute
     app
-    color="transparent"
+    dark
     flat
     height="88"
   >

@@ -1,10 +1,10 @@
 <template>
+  <!-- color="grey darken-2" -->
   <v-navigation-drawer
     id="app-drawer"
     v-model="inputValue"
     style="z-index: 500"
     app
-    color="grey darken-2"
     dark
     floating
     mobile-break-point="991"

@@ -5,4 +5,5 @@ export default {
   sessionID: '',
   cars: [],
   carsGeo: [],
+  carMapCenter: [45.044502, 41.969065],
 }
