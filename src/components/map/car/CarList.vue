@@ -27,7 +27,7 @@
           text
           icon
           color="white"
-          @click="chooseTrack"
+          @click="chooseTrack(car.vehicleId)"
         >
           <v-icon>mdi-chart-timeline-variant</v-icon>
         </v-btn>
@@ -70,10 +70,10 @@
       cartCenter (id) {
         this.setNewCarMapCenter(this.carsGeo[id])
       },
-      chooseTrack () {
-        this.$emit('choose-track')
+      chooseTrack (id) {
+        this.chooseNewCar(id)
       },
-      ...mapMutations(['setNewCarMapCenter']),
+      ...mapMutations(['setNewCarMapCenter', 'chooseNewCar']),
     },
   }
 </script>

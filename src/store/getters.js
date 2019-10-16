@@ -6,4 +6,5 @@ export default {
   cars: state => state.cars,
   carsGeo: state => state.carsGeo,
   carMapCenter: state => state.carMapCenter,
+  chooseCar: state => state.chooseCar,
 }

@@ -16,4 +16,7 @@ export default {
   setNewCarMapCenter (state, payload) {
     state.carMapCenter = payload
   },
+  chooseNewCar (state, payload) {
+    state.chooseCar = payload
+  },
 }

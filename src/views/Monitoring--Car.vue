@@ -44,9 +44,9 @@
     </sidebar>
     <sidebar
       :right="true"
-      :is-open="opt"
+      :is-open="opt[0]"
     >
-      <car-list
+      <car-track-picker
         class="sidebar-div"
       />
     </sidebar>
@@ -57,6 +57,7 @@
   import { mapGetters, mapMutations } from 'vuex'
   import Controls from '../components/controls/Сontrols'
   import CarList from '../components/map/car/CarList'
+  import CarTrackPicker from '../components/map/car/CarTrackPicker'
   import Sidebar from '../components/map/sidebar/MapSidebar'
   import axios from 'axios'
 
@@ -65,6 +66,7 @@
       Controls,
       Sidebar,
       CarList,
+      CarTrackPicker,
     },
     data () {
       return {
@@ -76,12 +78,12 @@
         carsMarkers: [],
         isCarsReady: false,
         interval: null,
-        opt: false,
+        opt: [],
         sb: false,
       }
     },
     computed: {
-      ...mapGetters(['geolocation', 'cars', 'sessionID', 'carsGeo', 'carMapCenter']),
+      ...mapGetters(['geolocation', 'cars', 'sessionID', 'carsGeo', 'carMapCenter', 'chooseCar']),
     },
     watch: {
       geolocation (newGeo, oldGeo) {
@@ -121,6 +123,13 @@
                 this.$store.commit('setCarsGeoArray', carsGeoArr)
               })
           })
+      },
+      chooseCar: function (newVal, oldVal) {
+        if (newVal) {
+          this.opt.push(1)
+        } else {
+          this.opt.splice(this.opt.findIndex(x => x === 1))
+        }
       },
     },
     created: function () {
