@@ -9,6 +9,7 @@ export default [
     path: '',
     // Relative to /src/views
     view: 'Map',
+    name: 'Демо',
   },
   {
     path: '/monitor-car',
