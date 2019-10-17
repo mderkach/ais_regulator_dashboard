@@ -4,91 +4,51 @@
   >
     <v-container>
       <v-row>
-        <p class="car-track-picker-title">
-          Параметры трека машины <b>{{ chooseCarToTrack }}</b>
-        </p>
-        <v-checkbox
-          v-model="isHour"
-          dark
-          :label="'За час'"
-        />
+        <v-col
+          cols="12"
+          lg="12"
+        >
+          <span>
+            Параметры трека машины <b>{{ chooseCarToTrack }}</b>
+          </span>
+        </v-col>
       </v-row>
       <div
         v-if="!isHour"
-        class="car-track-picker-content-datepicker"
+        class="car-track-picker-content"
       >
         <v-row>
           <v-col
-            cols="12"
-            lg="12"
+            cols="2"
+            lg="2"
+            style="display:flex"
           >
-            Начальное время
+            <span style="align-self: center;">
+              C:
+            </span>
           </v-col>
-        </v-row>
-        <v-row>
           <v-col
-            cols="12"
-            lg="12"
-            class="datepicker-input-wrapper"
+            cols="10"
+            lg="10"
+            style="position:relative"
           >
             <input
-              type="time"
+              v-model="hoursFrom"
+              type="number"
               class="datepicker-input-time"
+              min="00"
+              max="23"
+            >
+            <span style="font-size: 20px;">:</span>
+            <input
+              v-model="minutesFrom"
+              type="number"
+              class="datepicker-input-time"
+              min="00"
+              max="60"
             >
             <v-menu
               v-model="menu1"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  icon
-                  color="white"
-                  v-on="on"
-                >
-                  <v-icon>
-                    mdi-calendar
-                  </v-icon>
-                </v-btn>
-              </template>
-              <v-date-picker
-                v-model="date"
-                color="deep-orange accent-4"
-                locale="ru"
-                @input="menu1 = false"
-              />
-            </v-menu>
-            <!-- <p>Date in ISO format: <strong>{{ date }}</strong></p> -->
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col
-            cols="12"
-            lg="12"
-          >
-            Начальное время
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col
-            cols="5"
-            lg="5"
-            style="display:flex"
-          >
-            <input
-              type="time"
-              class="car-track-picker-content-datepicker--time"
-            >
-          </v-col>
-          <v-col
-            cols="7"
-            lg="7"
-          >
-            <v-menu
-              v-model="menu2"
               :close-on-content-click="false"
               :nudge-right="40"
               transition="scale-transition"
@@ -100,21 +60,126 @@
                   v-model="date"
                   dark
                   readonly
-                  v-on="on"
                 />
+                <v-btn
+                  icon
+                  :color="color"
+                  class="calendar-button"
+                  v-on="on"
+                >
+                  <v-icon>
+                    mdi-calendar
+                  </v-icon>
+                </v-btn>
               </template>
               <v-date-picker
                 v-model="date"
-                color="deep-orange accent-4"
+                :color="color"
+                locale="ru"
+                @input="menu1 = false"
+              />
+            </v-menu>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="2"
+            lg="2"
+            style="display:flex"
+          >
+            <span style="align-self: center;">
+              ПО:
+            </span>
+          </v-col>
+          <v-col
+            cols="10"
+            lg="10"
+            style="position:relative"
+          >
+            <input
+              v-model="hoursTo"
+              type="number"
+              class="datepicker-input-time"
+              min="00"
+              max="23"
+            >
+            <span style="font-size: 20px;">:</span>
+            <input
+              v-model="minutesTo"
+              type="number"
+              class="datepicker-input-time"
+              min="00"
+              max="60"
+            >
+            <v-menu
+              v-model="menu2"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="date2"
+                  dark
+                  readonly
+                />
+                <v-btn
+                  icon
+                  :color="color"
+                  class="calendar-button"
+                  v-on="on"
+                >
+                  <v-icon>
+                    mdi-calendar
+                  </v-icon>
+                </v-btn>
+              </template>
+              <v-date-picker
+                v-model="date2"
+                :color="color"
                 locale="ru"
                 @input="menu2 = false"
               />
             </v-menu>
-            <!-- <p>Date in ISO format: <strong>{{ date }}</strong></p> -->
           </v-col>
         </v-row>
       </div>
-      <v-btn>Построить</v-btn>
+      <v-row>
+        <v-col
+          cols="12"
+          lg="12"
+        >
+          <v-checkbox
+            v-model="isHour"
+            dark
+            :label="'Выбрать последний час'"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+          cols="6"
+          lg="6"
+        >
+          <v-btn
+            @click="getTrack"
+          >
+            Построить
+          </v-btn>
+        </v-col>
+        <v-col
+          cols="6"
+          lg="6"
+        >
+          <v-btn
+            @click="chooseNewCarToTrack(null)"
+          >
+            Отмена
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -122,24 +187,29 @@
 <script>
 
   import { mapGetters, mapMutations } from 'vuex'
+  import axios from 'axios'
 
   export default {
     data (vm) {
       return {
+        hoursFrom: '00',
+        minutesFrom: '00',
+        hoursTo: '00',
+        minutesTo: '00',
         date: new Date().toISOString().substr(0, 10),
         date2: new Date().toISOString().substr(0, 10),
-        dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
         menu1: false,
         menu2: false,
         isHour: false,
         isOpen: false,
+        color: 'blue darken-2',
       }
     },
     computed: {
       computedDateFormatted () {
         return this.formatDate(this.date)
       },
-      ...mapGetters(['chooseCarToTrack']),
+      ...mapGetters(['chooseCarToTrack', 'sessionID']),
     },
     watch: {
       date (val) {
@@ -168,7 +238,41 @@
       chooseTrack () {
         this.$emit('choose-track')
       },
-      ...mapMutations(['setNewCarMapCenter']),
+      getTrack () {
+        if (this.isHour) {
+          console.log('nothig')
+        } else {
+          let fromTime = `${this.hoursFrom}:${this.minutesFrom}`
+          let toTime = `${this.hoursTo}:${this.minutesTo}`
+          let from = `${fromTime.length > 1 ? fromTime : ''} ${
+            this.date
+          }`
+          let to = `${toTime.length > 1 ? toTime : ''} ${
+            this.date2
+          }`
+          this.fetchTrack(from, to)
+        }
+      },
+      fetchTrack (fromTime, toTime) {
+        axios
+          .get('http://194.58.104.20/GetVehicleHistory.php', {
+            params: {
+              sessionId: this.sessionID,
+              vehicleId: this.chooseCarToTrack,
+              from: fromTime,
+              to: toTime,
+            },
+          })
+          .then(res => {
+            let arr = res.data.map(x => [x.latitude, x.longitude])
+            this.addNewTrack({
+              latLngs: arr,
+              color: 'green',
+            })
+            console.log(arr)
+          })
+      },
+      ...mapMutations(['setNewCarMapCenter', 'chooseNewCarToTrack', 'addNewTrack']),
     },
   }
 </script>
@@ -183,35 +287,71 @@
     color: white;
 
     &-title {
-      margin-bottom: 20px;
+      margin-bottom: 0;
     }
 
     &-content {
-      padding: 0 30px;
+      font-size: 18px;
+      transition: height ease-in-out 0.3s;
 
-    & .datepicker-input {
+      input[type=number] {
+        text-align: center;
 
-      &-time{
-        min-width: 90px;
-        // border: 1px solid white;
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+      }
+      .v-text-field, .v-input__slot{
+        padding: 0;
+        margin: 0;
+        font-size:18px;
+        max-width: 120px;
+        display: inline-block;
       }
 
-      &-wrapper{
-        display: flex;
-        font-size: 25px;
+      .calendar-button {
+          position: absolute;
+          top: 9px;
+          right: 14px;
+          z-index: 600;
+      }
 
-        & .v-btn, input {
-          align-self: center;
+      .datepicker-input {
+
+        &-time {
+          // border: 1px solid white;
+          width: 30px;
+          font-size: 20px;
+          position: relative;
+
+          &::before {
+            content: 'awdaw';
+            bottom: -1px;
+            left: 0;
+            position: absolute;
+            border-color: white;
+            border-style: solid;
+            width: 100%;
+          }
+
+          &:last-of-type{
+            margin-right: 10px;
+          }
+        }
+
+        &-wrapper{
+          display: flex;
+          font-size: 25px;
+
+          & .v-btn, input {
+            align-self: center;
+          }
         }
       }
     }
 
-    }
-
-    .v-text-field, .v-input__slot{
-      padding: 0;
-      margin: 0;
-    }
     .v-text-field__details, .v-messages{
       display: none;
     }

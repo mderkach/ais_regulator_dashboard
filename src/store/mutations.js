@@ -19,4 +19,7 @@ export default {
   chooseNewCarToTrack (state, payload) {
     state.chooseCarToTrack = payload
   },
+  addNewTrack (state, payload) {
+    state.mapTracks.push(payload)
+  },
 }

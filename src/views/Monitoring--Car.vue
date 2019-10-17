@@ -33,6 +33,15 @@
           </l-icon>
         </l-marker>
       </div>
+      <div v-if="mapTracks[0]">
+        <l-polyline
+          v-for="(track, i) in mapTracks"
+          :key="i"
+          :lat-lngs="track.latLngs"
+          :color="track.color"
+          :weight="5"
+        />
+      </div>
       <l-tile-layer :url="url" />
     </l-map>
     <controls />
@@ -83,7 +92,7 @@
       }
     },
     computed: {
-      ...mapGetters(['geolocation', 'cars', 'sessionID', 'carsGeo', 'carMapCenter', 'chooseCarToTrack']),
+      ...mapGetters(['geolocation', 'cars', 'sessionID', 'carsGeo', 'carMapCenter', 'chooseCarToTrack', 'mapTracks']),
     },
     watch: {
       geolocation (newGeo, oldGeo) {
@@ -95,7 +104,7 @@
       carsGeo: function (newVal, oldVal) {
         if (!this.isCarsReady) {
           this.isCarsReady = true
-          // this.interval = setInterval(this.getLastCoords, 1000)
+          this.interval = setInterval(this.getLastCoords, 1000)
         }
       },
       sessionID: function () {
@@ -125,10 +134,11 @@
           })
       },
       chooseCarToTrack: function (newVal, oldVal) {
-        if (newVal) {
+        if (newVal && oldVal == null) {
           this.opt.push(true)
-        } else {
+        } else if (newVal == null) {
           this.opt.splice(this.opt.findIndex(x => x === 1))
+          console.log(this.opt)
         }
       },
     },
