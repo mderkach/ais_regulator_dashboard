@@ -71,9 +71,9 @@
         this.setNewCarMapCenter(this.carsGeo[id])
       },
       chooseTrack (id) {
-        this.chooseNewCar(id)
+        this.chooseNewCarToTrack(id)
       },
-      ...mapMutations(['setNewCarMapCenter', 'chooseNewCar']),
+      ...mapMutations(['setNewCarMapCenter', 'chooseNewCarToTrack']),
     },
   }
 </script>

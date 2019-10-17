@@ -6,5 +6,5 @@ export default {
   cars: [],
   carsGeo: [],
   carMapCenter: [45.044502, 41.969065],
-  chooseCar: null,
+  chooseCarToTrack: null,
 }

@@ -83,7 +83,7 @@
       }
     },
     computed: {
-      ...mapGetters(['geolocation', 'cars', 'sessionID', 'carsGeo', 'carMapCenter', 'chooseCar']),
+      ...mapGetters(['geolocation', 'cars', 'sessionID', 'carsGeo', 'carMapCenter', 'chooseCarToTrack']),
     },
     watch: {
       geolocation (newGeo, oldGeo) {
@@ -124,9 +124,9 @@
               })
           })
       },
-      chooseCar: function (newVal, oldVal) {
+      chooseCarToTrack: function (newVal, oldVal) {
         if (newVal) {
-          this.opt.push(1)
+          this.opt.push(true)
         } else {
           this.opt.splice(this.opt.findIndex(x => x === 1))
         }
