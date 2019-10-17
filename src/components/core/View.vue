@@ -1,5 +1,5 @@
 <template>
-  <v-content class="grey lighten-3">
+  <v-content class="grey darken-3">
     <div id="core-view">
       <v-fade-transition mode="out-in">
         <router-view />

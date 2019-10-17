@@ -11,11 +11,6 @@ export default [
     view: 'Map',
   },
   {
-    path: '/user-profile',
-    name: 'User Profile',
-    view: 'UserProfile',
-  },
-  {
     path: '/monitor-car',
     name: 'Доступные трнаспортные стредства',
     view: 'Monitoring--Car',
@@ -26,29 +21,8 @@ export default [
     view: 'Monitoring--CT',
   },
   {
-    path: '/table-list',
-    name: 'Table List',
-    view: 'TableList',
-  },
-  {
-    path: '/typography',
-    view: 'Typography',
-  },
-  {
-    path: '/icons',
-    view: 'Icons',
-  },
-  {
-    path: '/dashboard',
-    view: 'Dashboard',
-  },
-  {
-    path: '/notifications',
-    view: 'Notifications',
-  },
-  {
-    path: '/upgrade',
-    name: 'Upgrade to PRO',
-    view: 'Upgrade',
+    path: '/classifiers',
+    name: 'Классификаторы',
+    view: 'Classifiers',
   },
 ]
