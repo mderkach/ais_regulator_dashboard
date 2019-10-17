@@ -2,61 +2,62 @@
   <div
     class="car-track-picker"
   >
-    <p class="car-track-picker-title">
-      Параметры трека машины <b>{{ chooseCarToTrack }}</b>
-    </p>
-    <div class="car-track-picker-content">
-      <v-checkbox
-        v-model="isHour"
-        dark
-        :label="`За час`"
-      />
+    <v-container>
+      <v-row>
+        <p class="car-track-picker-title">
+          Параметры трека машины <b>{{ chooseCarToTrack }}</b>
+        </p>
+        <v-checkbox
+          v-model="isHour"
+          dark
+          :label="'За час'"
+        />
+      </v-row>
       <div
         v-if="!isHour"
         class="car-track-picker-content-datepicker"
       >
         <v-row>
           <v-col
-            cols="5"
-            lg="5"
-            style="display:flex"
+            cols="12"
+            lg="12"
           >
-            <v-text-field
-              dark
-            >
-              <input
-                type="time"
-                class="car-track-picker-content-datepicker--time"
-              >
-            </v-text-field>
+            Начальное время
           </v-col>
+        </v-row>
+        <v-row>
           <v-col
-            cols="7"
-            lg="7"
+            cols="12"
+            lg="12"
+            class="datepicker-input-wrapper"
           >
+            <input
+              type="time"
+              class="datepicker-input-time"
+            >
             <v-menu
-              ref="menu1"
               v-model="menu1"
               :close-on-content-click="false"
+              :nudge-right="40"
               transition="scale-transition"
               offset-y
-              max-width="290px"
               min-width="290px"
             >
               <template v-slot:activator="{ on }">
-                <v-text-field
-                  v-model="dateFormatted"
-                  dark
-                  persistent-hint
-                  outlined
-                  @blur="date = parseDate(dateFormatted)"
+                <v-btn
+                  icon
+                  color="white"
                   v-on="on"
-                />
+                >
+                  <v-icon>
+                    mdi-calendar
+                  </v-icon>
+                </v-btn>
               </template>
               <v-date-picker
                 v-model="date"
-                color="deep-orange accent-3"
-                no-title
+                color="deep-orange accent-4"
+                locale="ru"
                 @input="menu1 = false"
               />
             </v-menu>
@@ -65,46 +66,47 @@
         </v-row>
         <v-row>
           <v-col
+            cols="12"
+            lg="12"
+          >
+            Начальное время
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
             cols="5"
             lg="5"
             style="display:flex"
           >
-            <v-text-field
-              dark
+            <input
+              type="time"
+              class="car-track-picker-content-datepicker--time"
             >
-              <input
-                type="time"
-                class="car-track-picker-content-datepicker--time"
-              >
-            </v-text-field>
           </v-col>
           <v-col
             cols="7"
             lg="7"
           >
             <v-menu
-              ref="menu2"
               v-model="menu2"
               :close-on-content-click="false"
+              :nudge-right="40"
               transition="scale-transition"
               offset-y
-              max-width="290px"
               min-width="290px"
             >
               <template v-slot:activator="{ on }">
                 <v-text-field
-                  v-model="dateFormatted"
-                  outlined
+                  v-model="date"
                   dark
-                  persistent-hint
-                  @blur="date2 = parseDate(dateFormatted)"
+                  readonly
                   v-on="on"
                 />
               </template>
               <v-date-picker
-                v-model="date2"
-                color="deep-orange accent-3"
-                no-title
+                v-model="date"
+                color="deep-orange accent-4"
+                locale="ru"
                 @input="menu2 = false"
               />
             </v-menu>
@@ -113,7 +115,7 @@
         </v-row>
       </div>
       <v-btn>Построить</v-btn>
-    </div>
+    </v-container>
   </div>
 </template>
 
@@ -187,8 +189,31 @@
     &-content {
       padding: 0 30px;
 
-      &-datepicker{
+    & .datepicker-input {
+
+      &-time{
+        min-width: 90px;
+        // border: 1px solid white;
       }
+
+      &-wrapper{
+        display: flex;
+        font-size: 25px;
+
+        & .v-btn, input {
+          align-self: center;
+        }
+      }
+    }
+
+    }
+
+    .v-text-field, .v-input__slot{
+      padding: 0;
+      margin: 0;
+    }
+    .v-text-field__details, .v-messages{
+      display: none;
     }
   }
 </style>
