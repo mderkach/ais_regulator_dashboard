@@ -23,7 +23,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import Controls from '../components/controls/Сontrols'
-  import mapSidebar from '../components/map/sidebar/MapSidebar'
+  import mapSidebar from '../components/sidebar/MapSidebar'
 
   export default {
     components: {

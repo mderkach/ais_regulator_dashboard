@@ -41,12 +41,28 @@
           :color="track.color"
           :weight="5"
         />
+        <l-marker
+          v-for="(car, i) in cars"
+          :key="i"
+          :ref="car.vehicleId"
+          :lat-lng="carsGeo[car.vehicleId]"
+        >
+          <l-icon
+            :icon-anchor="iconAnchor"
+          >
+            <span class="map-marker-text">{{ car.stateNumber }}</span>
+            <img
+              src="../assets/truck-front.png"
+            >
+          </l-icon>
+        </l-marker>
       </div>
       <l-tile-layer :url="url" />
     </l-map>
     <controls />
     <sidebar :is-open="sb">
       <car-list
+        :choose-car-mode="chooseCarMode"
         class="sidebar-div"
         @choose-track="opt = !opt"
       />
@@ -89,6 +105,7 @@
         interval: null,
         opt: [],
         sb: false,
+        chooseCarMode: false,
       }
     },
     computed: {
@@ -134,11 +151,12 @@
           })
       },
       chooseCarToTrack: function (newVal, oldVal) {
-        if (newVal && oldVal == null) {
+        if (newVal && !oldVal) {
           this.opt.push(true)
+          this.chooseCarMode = true
         } else if (newVal == null) {
           this.opt.splice(this.opt.findIndex(x => x === 1))
-          console.log(this.opt)
+          this.chooseCarMode = false
         }
       },
     },

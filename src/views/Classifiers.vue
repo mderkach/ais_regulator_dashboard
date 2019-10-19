@@ -48,7 +48,7 @@
 </template>
 
 <script>
-  import mapSidebar from '../components/map/sidebar/MapSidebar'
+  import mapSidebar from '../components/sidebar/MapSidebar'
 
   export default {
     name: 'Classifiers',

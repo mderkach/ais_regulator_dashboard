@@ -9,7 +9,12 @@
           lg="12"
         >
           <span>
-            Параметры трека машины <b>{{ chooseCarToTrack }}</b>
+            Параметры трека машины
+          </span>
+          <br>
+
+          <span style="font-size: 15px; font-style: italic;font-weight: bold">
+            {{ getCarById(chooseCarToTrack) ? getCarById(chooseCarToTrack).stateNumber : 'НЕТ ДАННЫХ' }}
           </span>
         </v-col>
       </v-row>
@@ -211,7 +216,7 @@
       computedDateFormatted () {
         return this.formatDate(this.date)
       },
-      ...mapGetters(['chooseCarToTrack', 'sessionID']),
+      ...mapGetters(['chooseCarToTrack', 'sessionID', 'getCarById']),
     },
     watch: {
       date (val) {

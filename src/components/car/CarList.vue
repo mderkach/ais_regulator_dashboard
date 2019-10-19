@@ -69,6 +69,12 @@
   import { mapGetters, mapMutations } from 'vuex'
 
   export default {
+    props: {
+      chooseCarMode: {
+        type: Boolean,
+        default: false,
+      },
+    },
     data () {
       return {
         isOpen: false,
@@ -82,6 +88,9 @@
     },
     methods: {
       cartCenter (id) {
+        if (this.chooseCarMode) {
+          this.chooseNewCarToTrack(id)
+        }
         this.setNewCarMapCenter(this.carsGeo[id])
       },
       chooseTrack (id) {

@@ -23,7 +23,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import Controls from '../components/controls/Сontrols'
-  import CTbubble from '../components/map/ct/CTbuble'
+  import CTbubble from '../components/ct/CTbuble'
 
   export default {
     components: {
