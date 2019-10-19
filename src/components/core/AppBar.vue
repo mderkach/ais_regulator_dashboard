@@ -21,7 +21,7 @@
 
     <v-spacer />
 
-    <v-toolbar-items>
+    <!-- <v-toolbar-items>
       <v-row
         align="center"
         class="mx-0"
@@ -92,7 +92,7 @@
           </v-icon>
         </v-btn>
       </v-row>
-    </v-toolbar-items>
+    </v-toolbar-items> -->
   </v-app-bar>
 </template>
 

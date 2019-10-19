@@ -44,6 +44,7 @@
       >
         <v-list-group
           v-if="link.subMenu"
+          no-action
           :prepend-icon="link.icon"
         >
           <template v-slot:activator>
@@ -55,13 +56,11 @@
             :to="subLink.to"
             active-class="primary white--text"
           >
-            <!-- <v-list-item-action>
-              <v-icon>{{ subLink.icon }}</v-icon>
-            </v-list-item-action> -->
-
-            <v-list-item-title
-              v-text="subLink.text"
-            />
+            <v-list-item-content>
+              <v-list-item-title
+                v-text="subLink.text"
+              />
+            </v-list-item-content>
           </v-list-item>
         </v-list-group>
         <v-list-item
@@ -83,6 +82,8 @@
 <script>
 // Utilities
   import { mapMutations, mapState } from 'vuex'
+  // eslint-disable-next-line no-unused-vars
+  import { mdiDatabaseEdit, mdiFileDocumentBoxMultiple, mdiAlertBox } from '@mdi/js'
 
   export default {
     props: {
@@ -99,9 +100,32 @@
           text: 'Карта',
         },
         {
-          to: '#',
-          icon: 'mdi-map-marker',
+          icon: 'mdi-database-edit',
           text: 'Данные',
+          subMenu: [
+            {
+              to: '#',
+              text: 'Импорт отчетов',
+            },
+            {
+              to: '#',
+              text: 'Экспорт отчетов',
+            },
+            {
+              to: '#',
+              text: 'Печать',
+            },
+          ],
+        },
+        {
+          icon: 'mdi-file-document-box-multiple',
+          text: 'Документы',
+          subMenu: [
+            {
+              to: '/classifiers',
+              text: 'Классификаторы',
+            },
+          ],
         },
         {
           icon: 'mdi-laptop-chromebook',
@@ -117,7 +141,10 @@
             },
           ],
         },
-
+        {
+          icon: 'mdi-alert-box',
+          text: 'Информирование',
+        },
       ],
     }),
 

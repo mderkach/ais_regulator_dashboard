@@ -16,16 +16,19 @@
       <l-tile-layer :url="url" />
     </l-map>
     <controls />
+    <c-tbubble />
   </div>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
   import Controls from '../components/controls/Сontrols'
+  import CTbubble from '../components/map/ct/CTbuble'
 
   export default {
     components: {
       Controls,
+      CTbubble,
     },
     data () {
       return {

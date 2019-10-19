@@ -9,11 +9,7 @@ export default [
     path: '',
     // Relative to /src/views
     view: 'Map',
-  },
-  {
-    path: '/user-profile',
-    name: 'User Profile',
-    view: 'UserProfile',
+    name: 'Демо',
   },
   {
     path: '/monitor-car',
@@ -26,29 +22,8 @@ export default [
     view: 'Monitoring--CT',
   },
   {
-    path: '/table-list',
-    name: 'Table List',
-    view: 'TableList',
-  },
-  {
-    path: '/typography',
-    view: 'Typography',
-  },
-  {
-    path: '/icons',
-    view: 'Icons',
-  },
-  {
-    path: '/dashboard',
-    view: 'Dashboard',
-  },
-  {
-    path: '/notifications',
-    view: 'Notifications',
-  },
-  {
-    path: '/upgrade',
-    name: 'Upgrade to PRO',
-    view: 'Upgrade',
+    path: '/classifiers',
+    name: 'Классификаторы',
+    view: 'Classifiers',
   },
 ]

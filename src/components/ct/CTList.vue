@@ -25,5 +25,5 @@
 </script>
 
 <style lang="scss">
-@import '../car/sidebar.scss';
+@import '../sidebar/sidebar;
 </style>
