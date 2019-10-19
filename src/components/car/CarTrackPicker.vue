@@ -188,8 +188,10 @@
 
   import { mapGetters, mapMutations } from 'vuex'
   import axios from 'axios'
+  import { chooseColorFunc } from '../../mixins/chooseColorFunc'
 
   export default {
+    mixins: [chooseColorFunc],
     data (vm) {
       return {
         hoursFrom: '00',
@@ -235,9 +237,6 @@
       cartCenter (id) {
         this.setNewCarMapCenter(this.carsGeo[id])
       },
-      chooseTrack () {
-        this.$emit('choose-track')
-      },
       getTrack () {
         if (this.isHour) {
           console.log('nothig')
@@ -265,11 +264,14 @@
           })
           .then(res => {
             let arr = res.data.map(x => [x.latitude, x.longitude])
+            const id = `f${(+new Date()).toString(16)}`
+            const color = this.chooseColor()
             this.addNewTrack({
+              trackId: id,
+              vehicleId: this.chooseCarToTrack,
               latLngs: arr,
-              color: 'green',
+              color: color,
             })
-            console.log(arr)
           })
       },
       ...mapMutations(['setNewCarMapCenter', 'chooseNewCarToTrack', 'addNewTrack']),

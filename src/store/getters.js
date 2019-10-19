@@ -8,4 +8,5 @@ export default {
   carMapCenter: state => state.carMapCenter,
   chooseCarToTrack: state => state.chooseCarToTrack,
   mapTracks: state => state.mapTracks,
+  getCarTracks: state => id => state.mapTracks.filter(x => x.vehicleId === id),
 }

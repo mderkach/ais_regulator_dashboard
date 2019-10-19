@@ -65,9 +65,9 @@
 <script>
   import { mapGetters, mapMutations } from 'vuex'
   import Controls from '../components/controls/Сontrols'
-  import CarList from '../components/map/car/CarList'
-  import CarTrackPicker from '../components/map/car/CarTrackPicker'
-  import Sidebar from '../components/map/sidebar/MapSidebar'
+  import CarList from '../components/car/CarList'
+  import CarTrackPicker from '../components/car/CarTrackPicker'
+  import Sidebar from '../components/sidebar/MapSidebar'
   import axios from 'axios'
 
   export default {
@@ -177,9 +177,6 @@
     methods: {
       zoomUpdated (zoom) {
         this.zoom = zoom
-      },
-      chooseTrack () {
-        console.log('awdaw')
       },
       centerUpdated (center) {
         this.setNewCarMapCenter(center)

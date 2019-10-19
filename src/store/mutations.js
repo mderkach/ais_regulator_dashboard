@@ -22,4 +22,8 @@ export default {
   addNewTrack (state, payload) {
     state.mapTracks.push(payload)
   },
+  deleteTrack (state, payload) {
+    const ind = state.mapTracks.indexOf(state.mapTracks.find(x => x.trackId === payload))
+    state.mapTracks.splice(ind, 1)
+  },
 }
