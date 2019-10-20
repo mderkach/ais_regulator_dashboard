@@ -27,7 +27,7 @@
           text
           icon
           color="white"
-          @click="chooseTrack(car.vehicleId)"
+          @click="chooseTrack({id: car.vehicleId, num: car.stateNumber})"
         >
           <v-icon>mdi-chart-timeline-variant</v-icon>
         </v-btn>
@@ -68,6 +68,10 @@
         type: Boolean,
         default: false,
       },
+      cars: {
+        type: Array,
+        default: new Array([]),
+      },
     },
     data () {
       return {
@@ -75,7 +79,7 @@
       }
     },
     computed: {
-      ...mapGetters(['cars', 'carsGeo', 'getCarTracks']),
+      ...mapGetters(['carsGeo', 'getCarTracks']),
     },
     mounted: function () {
       this.isOpen = true
@@ -83,14 +87,19 @@
     methods: {
       cartCenter (id) {
         if (this.chooseCarMode) {
-          this.chooseNewCarToTrack(id)
+          let car = this.cars.find(x => x.vehicleId === id)
+          this.chooseNewCarToTrack({ id: car.vehicleId, num: car.stateNumber })
         }
-        this.setNewCarMapCenter(this.carsGeo[id])
+        this.$emit('chooseCar', this.carsGeo[id])
       },
-      chooseTrack (id) {
-        this.chooseNewCarToTrack(id)
+      chooseTrack (car) {
+        this.chooseNewCarToTrack(car)
       },
-      ...mapMutations(['setNewCarMapCenter', 'chooseNewCarToTrack', 'deleteTrack', 'chooseNewTrackToChange']),
+      ...mapMutations([
+        'setNewCarMapCenter',
+        'chooseNewCarToTrack',
+        'deleteTrack',
+        'chooseNewTrackToChange']),
     },
   }
 </script>
@@ -98,18 +107,6 @@
 <style lang="scss">
 .v-expansion-panel-content__wrap {
   padding: 5px 15px;
-}
-
-@keyframes slidein {
-  from {
-    height: 0;
-    margin-top: 0;
-  }
-
-  to {
-    height: 77px;
-    margin-top: 20px;
-  }
 }
 .car {
   .trackBar {
@@ -120,8 +117,6 @@
 
     &-first-active{
       margin-top: 10px;
-      // animation-duration: 0.3s;
-      // animation-name: slidein;
       height: auto;
     }
 

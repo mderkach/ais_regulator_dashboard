@@ -13,7 +13,7 @@
           </span>
           <br>
           <span style="font-size: 15px; font-style: italic;font-weight: bold">
-            {{ getCarById(chooseCarToTrack) ? getCarById(chooseCarToTrack).stateNumber : 'НЕТ ДАННЫХ' }}
+            {{ chooseCarToTrack ? chooseCarToTrack.num : 'НЕТ ДАННЫХ' }}
           </span>
         </v-col>
       </v-row>
@@ -261,7 +261,7 @@
           .get('http://194.58.104.20/GetVehicleHistory.php', {
             params: {
               sessionId: this.sessionID,
-              vehicleId: this.chooseCarToTrack,
+              vehicleId: this.chooseCarToTrack.id,
               from: fromTime,
               to: toTime,
             },
@@ -272,7 +272,7 @@
             const color = this.chooseColor()
             this.addNewTrack({
               trackId: id,
-              vehicleId: this.chooseCarToTrack,
+              vehicleId: this.chooseCarToTrack.id,
               latLngs: arr,
               color: color,
               weight: 5,

@@ -7,14 +7,8 @@ export default {
   setSessionID (state, payload) {
     state.sessionID = payload
   },
-  setCarsArray (state, payload) {
-    state.cars = payload
-  },
   setCarsGeoArray (state, payload) {
     state.carsGeo = payload
-  },
-  setNewCarMapCenter (state, payload) {
-    state.carMapCenter = payload
   },
   chooseNewCarToTrack (state, payload) {
     state.chooseCarToTrack = payload

@@ -1,9 +1,9 @@
 <template>
   <div
     class="map-sidebar-wrapper"
-    :class="{ 'map-sidebar-wrapper-right': right, 'map-sidebar-wrapper-left': !right, 'side-active': isOpen}"
+    :class="{ 'map-sidebar-wrapper-right': right, 'map-sidebar-wrapper-left': !right}"
   >
-    <slot :class="'awdawd'" />
+    <slot />
   </div>
 </template>
 
@@ -11,10 +11,6 @@
   export default {
     props: {
       right: {
-        type: Boolean,
-        default: false,
-      },
-      isOpen: {
         type: Boolean,
         default: false,
       },

@@ -24,7 +24,6 @@
   max-height: calc(100% - 10px);
   width: 300px;
   top: 10px;
-  transition: left ease-in-out 1s, right ease-in-out 1s;
   overflow-y: scroll;
   
   &::-webkit-scrollbar {

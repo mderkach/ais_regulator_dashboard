@@ -4,7 +4,7 @@
       ref="osm"
       style="height: calc(100vh - 88px); width: 100%"
       :zoom="zoom"
-      :center="carMapCenter"
+      :center="mapCenter"
       :options="{ zoomControl: false }"
       @update:zoom="zoomUpdated"
       @update:center="centerUpdated"
@@ -80,18 +80,19 @@
     <sidebar>
       <car-list
         v-if="isCarsReady"
-        :choose-car-mode="chooseCarMode"
-        @choose-track="opt = !opt"
+        :cars="cars"
+        :choose-car-mode="chooseCarToTrack != null"
+        @chooseCar="centerUpdated"
       />
     </sidebar>
     <sidebar
       :right="true"
     >
       <car-track-picker
-        v-if="opt[0]"
+        v-if="chooseCarToTrack != null"
       />
       <car-track-settings
-        v-if="opt[1]"
+        v-if="chooseTrackToChange != null"
       />
     </sidebar>
   </div>
@@ -117,26 +118,22 @@
     data () {
       return {
         url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-        initialLocation: [45.044502, 41.969065],
         marker: [-100, -100],
         iconAnchor: [16, 16],
         iconMarkerAnchor: [18, 36],
+        mapCenter: [45.044502, 41.969065],
         zoom: 13,
-        carsMarkers: [],
         isCarsReady: false,
         interval: null,
         opt: [],
-        sb: false,
-        chooseCarMode: false,
+        cars: [],
       }
     },
     computed: {
       ...mapGetters([
         'geolocation',
-        'cars',
         'sessionID',
         'carsGeo',
-        'carMapCenter',
         'chooseCarToTrack',
         'mapTracks',
         'chooseTrackToChange']),
@@ -154,48 +151,6 @@
           this.interval = setInterval(this.getLastCoords, 1000)
         }
       },
-      sessionID: function () {
-        axios
-          .get('http://194.58.104.20/GetVehicles.php', {
-            params: {
-              sessionId: this.sessionID,
-            },
-          })
-          .then(res => {
-            let cars = res.data
-            this.$store.commit('setCarsArray', cars)
-          }).then(() => {
-            axios
-              .get('http://194.58.104.20/GetVehicleLastLocations.php', {
-                params: {
-                  sessionId: this.$store.state.sessionID,
-                },
-              })
-              .then(res => {
-                let carsGeoArr = []
-                res.data.forEach(e => {
-                  carsGeoArr[e.vehicleId] = [e.latitude, e.longitude]
-                })
-                this.$store.commit('setCarsGeoArray', carsGeoArr)
-              })
-          })
-      },
-      chooseCarToTrack: function (newVal, oldVal) {
-        if (newVal && !oldVal) {
-          this.opt[0] = true
-          this.chooseCarMode = true
-        } else if (newVal == null) {
-          this.opt[0] = false
-          this.chooseCarMode = false
-        }
-      },
-      chooseTrackToChange: function (newVal, oldVal) {
-        if (newVal && !oldVal) {
-          this.opt[1] = true
-        } else if (newVal == null) {
-          this.opt[1] = false
-        }
-      },
     },
     created: function () {
       axios
@@ -205,8 +160,8 @@
           },
         })
         .then(res => {
-          let cars = res.data
-          this.$store.commit('setCarsArray', cars)
+          let carsArr = res.data
+          this.cars = carsArr
         }).then(() => {
           axios
             .get('http://194.58.104.20/GetVehicleLastLocations.php', {
@@ -223,9 +178,6 @@
             })
         })
     },
-    mounted: function () {
-      this.sb = true
-    },
     destroyed: function () {
       clearInterval(this.interval)
       this.chooseNewCarToTrack(null)
@@ -235,7 +187,7 @@
         this.zoom = zoom
       },
       centerUpdated (center) {
-        this.setNewCarMapCenter(center)
+        this.mapCenter = center
       },
       getLastCoords () {
         axios
