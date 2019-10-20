@@ -3,7 +3,7 @@
     class="map-sidebar-wrapper"
     :class="{ 'map-sidebar-wrapper-right': right, 'map-sidebar-wrapper-left': !right, 'side-active': isOpen}"
   >
-    <slot />
+    <slot :class="'awdawd'" />
   </div>
 </template>
 

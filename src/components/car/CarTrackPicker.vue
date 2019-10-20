@@ -9,10 +9,9 @@
           lg="12"
         >
           <span>
-            Параметры трека машины
+            Построить трек для машины
           </span>
           <br>
-
           <span style="font-size: 15px; font-style: italic;font-weight: bold">
             {{ getCarById(chooseCarToTrack) ? getCarById(chooseCarToTrack).stateNumber : 'НЕТ ДАННЫХ' }}
           </span>
@@ -276,6 +275,7 @@
               vehicleId: this.chooseCarToTrack,
               latLngs: arr,
               color: color,
+              weight: 5,
             })
           })
       },

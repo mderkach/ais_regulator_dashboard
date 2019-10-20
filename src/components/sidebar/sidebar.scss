@@ -1,3 +1,23 @@
+@keyframes slidein-right {
+  from {
+    right: -350px;
+  }
+
+  to {
+    right: 0;
+  }
+}
+
+@keyframes slidein-left {
+  from {
+    left: -350px;
+  }
+
+  to {
+    left: 0;
+  }
+}
+
 .map-sidebar-wrapper{
   position: absolute;
   z-index: 400;
@@ -12,24 +32,32 @@
   }
   
 
-  & .sidebar-div {
+  & > div{
     margin-bottom: 20px;
+
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   &-left {
-    left: -350px;
-
-    &.side-active {
-      left: 10px;
-    }
+      left: 10px; 
+      
+      & > div{ 
+        position: relative;
+        animation-duration: 0.8s;
+        animation-name: slidein-left;
+      }
   }
 
   &-right {
-    right: -350px;
-
-    &.side-active {
       right: 10px;
-    }
-    
+
+      & > div{ 
+        position: relative;
+        animation-duration: 0.8s;
+        animation-name: slidein-right;
+      }
   }
 }

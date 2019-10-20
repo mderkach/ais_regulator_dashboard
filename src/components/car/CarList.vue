@@ -34,13 +34,6 @@
         <v-btn
           text
           icon
-          color="white"
-        >
-          <v-icon>mdi-av-timer</v-icon>
-        </v-btn>
-        <v-btn
-          text
-          icon
           color="deep-orange accent-3"
         >
           <v-icon>mdi-settings</v-icon>
@@ -55,6 +48,7 @@
             close
             :color="track.color"
             @click:close="deleteTrack(track.trackId)"
+            @click="chooseNewTrackToChange(track.trackId)"
           >
             трек
           </v-chip>
@@ -96,7 +90,7 @@
       chooseTrack (id) {
         this.chooseNewCarToTrack(id)
       },
-      ...mapMutations(['setNewCarMapCenter', 'chooseNewCarToTrack', 'deleteTrack']),
+      ...mapMutations(['setNewCarMapCenter', 'chooseNewCarToTrack', 'deleteTrack', 'chooseNewTrackToChange']),
     },
   }
 </script>

@@ -34,45 +34,64 @@
         </l-marker>
       </div>
       <div v-if="mapTracks[0]">
-        <l-polyline
+        <l-feature-group
           v-for="(track, i) in mapTracks"
           :key="i"
-          :lat-lngs="track.latLngs"
-          :color="track.color"
-          :weight="5"
-        />
-        <l-marker
-          v-for="(car, i) in cars"
-          :key="i"
-          :ref="car.vehicleId"
-          :lat-lng="carsGeo[car.vehicleId]"
         >
-          <l-icon
-            :icon-anchor="iconAnchor"
+          <l-polyline
+            :lat-lngs="track.latLngs"
+            :color="track.color"
+            :weight="track.weight"
+            @click="chooseNewTrackToChange(track.trackId)"
+          />
+          <l-marker
+            :lat-lng="track.latLngs[0]"
           >
-            <span class="map-marker-text">{{ car.stateNumber }}</span>
-            <img
-              src="../assets/truck-front.png"
+            <l-icon
+              :icon-anchor="iconMarkerAnchor"
             >
-          </l-icon>
-        </l-marker>
+              <v-icon
+                large
+                color="green darken-2"
+              >
+                mdi-map-marker
+              </v-icon>
+            </l-icon>
+          </l-marker>
+          <l-marker
+            :lat-lng="track.latLngs[track.latLngs.length - 1]"
+          >
+            <l-icon
+              :icon-anchor="iconMarkerAnchor"
+            >
+              <v-icon
+                large
+                color="red darken-2"
+              >
+                mdi-map-marker
+              </v-icon>
+            </l-icon>
+          </l-marker>
+        </l-feature-group>
       </div>
       <l-tile-layer :url="url" />
     </l-map>
     <controls />
-    <sidebar :is-open="sb">
+    <sidebar>
       <car-list
+        v-if="isCarsReady"
         :choose-car-mode="chooseCarMode"
-        class="sidebar-div"
         @choose-track="opt = !opt"
       />
     </sidebar>
     <sidebar
       :right="true"
-      :is-open="opt[0]"
     >
       <car-track-picker
-        class="sidebar-div"
+        v-if="opt[0]"
+      />
+      <car-track-settings
+        v-if="opt[1]"
       />
     </sidebar>
   </div>
@@ -83,6 +102,7 @@
   import Controls from '../components/controls/Сontrols'
   import CarList from '../components/car/CarList'
   import CarTrackPicker from '../components/car/CarTrackPicker'
+  import CarTrackSettings from '../components/car/CarTrackSettings'
   import Sidebar from '../components/sidebar/MapSidebar'
   import axios from 'axios'
 
@@ -92,6 +112,7 @@
       Sidebar,
       CarList,
       CarTrackPicker,
+      CarTrackSettings,
     },
     data () {
       return {
@@ -99,6 +120,7 @@
         initialLocation: [45.044502, 41.969065],
         marker: [-100, -100],
         iconAnchor: [16, 16],
+        iconMarkerAnchor: [18, 36],
         zoom: 13,
         carsMarkers: [],
         isCarsReady: false,
@@ -109,7 +131,15 @@
       }
     },
     computed: {
-      ...mapGetters(['geolocation', 'cars', 'sessionID', 'carsGeo', 'carMapCenter', 'chooseCarToTrack', 'mapTracks']),
+      ...mapGetters([
+        'geolocation',
+        'cars',
+        'sessionID',
+        'carsGeo',
+        'carMapCenter',
+        'chooseCarToTrack',
+        'mapTracks',
+        'chooseTrackToChange']),
     },
     watch: {
       geolocation (newGeo, oldGeo) {
@@ -152,11 +182,18 @@
       },
       chooseCarToTrack: function (newVal, oldVal) {
         if (newVal && !oldVal) {
-          this.opt.push(true)
+          this.opt[0] = true
           this.chooseCarMode = true
         } else if (newVal == null) {
-          this.opt.splice(this.opt.findIndex(x => x === 1))
+          this.opt[0] = false
           this.chooseCarMode = false
+        }
+      },
+      chooseTrackToChange: function (newVal, oldVal) {
+        if (newVal && !oldVal) {
+          this.opt[1] = true
+        } else if (newVal == null) {
+          this.opt[1] = false
         }
       },
     },
@@ -191,6 +228,7 @@
     },
     destroyed: function () {
       clearInterval(this.interval)
+      this.chooseNewCarToTrack(null)
     },
     methods: {
       zoomUpdated (zoom) {
@@ -214,7 +252,10 @@
             this.$store.commit('setCarsGeoArray', carsGeoArr)
           })
       },
-      ...mapMutations(['setNewCarMapCenter']),
+      ...mapMutations([
+        'setNewCarMapCenter',
+        'chooseNewCarToTrack',
+        'chooseNewTrackToChange']),
     },
   }
 </script>
