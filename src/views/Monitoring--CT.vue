@@ -14,29 +14,12 @@
         ref="myGeo"
         :lat-lng="marker"
       />
-      <l-marker
-        ref="newPoint"
-        :lat-lng="newPointCoords"
-      >
-        <l-popup
-          :options="{minWidth: '531px', closeButton: false, className: 'custom'}"
-        >
-          <c-tbubble
-            :point="newPnt"
-            @close="closeNewPointBuble()"
-            @refresh="reloadPoints"
-          />
-        </l-popup>
-        <l-icon
-          :icon-anchor="pointMarkerAnchor"
-        >
-          <img
-            width="24"
-            src="../assets/gps.svg"
-            alt="marker"
-          >
-        </l-icon>
-      </l-marker>
+      <l-circle
+        v-if="showPntCircle"
+        :lat-lng="[choosePnt.latitude,choosePnt.longtitude]"
+        :radius="choosePnt.radius ? parseInt(choosePnt.radius, 10) : 0"
+        :color="'red'"
+      />
       <l-marker
         v-for="(point, i) in points"
         :key="i"
@@ -51,7 +34,7 @@
         >
           <c-tbubble
             :point="choosePnt"
-            :is-change-mode="true"
+            :is-change-mode="point.id != -2"
             @close="chooseNewPnt(-1)"
             @refresh="reloadPoints"
           />
@@ -92,15 +75,20 @@
           v-else
           color="primary"
         >
-          <v-list-item
+          <div
             v-for="(point, i) in points"
             :key="i"
-            @click="chooseNewPnt(point.id)"
+            class="ct-list-items-wrapper"
           >
-            <v-list-item-content>
-              <v-list-item-title v-text="`${point.name} (${point.direction_id ? 'Обратно' : 'Туда'})`" />
-            </v-list-item-content>
-          </v-list-item>
+            <v-list-item
+              v-if="point.id != -2"
+              @click="chooseNewPnt(point.id)"
+            >
+              <v-list-item-content>
+                <v-list-item-title v-text="`${point.name} (${point.direction_id ? 'Обратно' : 'Туда'})`" />
+              </v-list-item-content>
+            </v-list-item>
+          </div>
         </v-list-item-group>
       </v-list>
     </map-sidebar>
@@ -125,14 +113,13 @@
         url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
         mapCenter: [45.044502, 41.969065],
         marker: [-100, -100],
-        newPointCoords: [-100, -100],
         zoom: 13,
         pointsReady: false,
         pointsLoad: false,
         pointMarkerAnchor: [12, 12],
         choosePntId: -1,
         choosePnt: {},
-        newPnt: {},
+        showPntCircle: false,
       }
     },
     computed: {
@@ -156,9 +143,15 @@
       },
       chooseNewPnt (id) {
         if (id !== this.choosePntId) {
-          if (id === -1) { this.$refs['point' + this.choosePntId][0].mapObject.closePopup() } else {
+          if (id === -1) {
+            this.$refs['point' + this.choosePntId][0].mapObject.closePopup()
+            setTimeout(() => {
+              this.showPntCircle = false
+              this.choosePntId = id
+            }, 150)
+          } else {
+            this.showPntCircle = true
             if (this.choosePntId !== -1 && this.$refs['point' + this.choosePntId][0]) {
-              console.log('awdaw')
               this.$refs['point' + this.choosePntId][0].mapObject.closePopup()
             }
             this.choosePntId = id
@@ -167,28 +160,27 @@
             pnt.type = pnt.type === 0 ? 'Остановка' : 'Участок дороги'
             this.choosePnt = pnt
           }
+        } else if (id === -2) {
+          console.log('awdawd')
+          this.$refs['point' + id][0].mapObject.openPopup()
         }
       },
       popupReady (id) {
         this.$refs['point' + id][0].mapObject.openPopup()
-        console.log()
+        setTimeout(() => {
+          this.mapCenter = [this.choosePnt.latitude + 0.0017, this.choosePnt.longtitude - 0.0014]
+          this.zoom = 17
+        }, 10)
+      },
+      showNewCircle () {
+        this.showPntCircle = true
       },
       mapClick (event) {
-        this.newPnt = {
-          name: '',
-          type: '',
-          direction: '',
-          longtitude: event.latlng.lng,
-          latitude: event.latlng.lat,
-          radius: 0,
-          address: '',
-          id: null,
-        }
-        this.newPointCoords = event.latlng
-        this.$refs['newPoint'].mapObject.openPopup()
-      },
-      closeNewPointBuble () {
-        this.$refs['newPoint'].mapObject.closePopup()
+        let pnt = this.points.find(x => x.id === -2)
+        pnt.latitude = event.latlng.lat
+        pnt.longtitude = event.latlng.lng
+        this.showNewCircle()
+        this.chooseNewPnt(-2)
       },
       centerUpdated (center) {
         this.mapCenter = center
@@ -197,8 +189,8 @@
         if (this.choosePntId !== -1 && this.$refs['point' + this.choosePntId][0]) {
           this.$refs['point' + this.choosePntId][0].mapObject.closePopup()
         }
-        this.$refs['newPoint'].mapObject.closePopup()
         this.pointsLoad = true
+        this.showPntCircle = false
         axios
           .get('http://194.58.104.20/GetControlPoints.php', {
             params: {
@@ -207,7 +199,18 @@
           })
           .then(res => {
             this.pointsReady = true
-            this.setPointsArray(res.data[0].ControlPoints)
+            let arr = res.data[0].ControlPoints
+            arr.push({
+              name: '',
+              type: '',
+              direction: '',
+              longtitude: -100,
+              latitude: -100,
+              radius: 0,
+              address: '',
+              id: -2,
+            })
+            this.setPointsArray(arr)
             this.pointsLoad = false
           })
       },

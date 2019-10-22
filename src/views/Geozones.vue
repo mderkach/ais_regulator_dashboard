@@ -11,21 +11,25 @@
             <v-toolbar flat>
               <v-toolbar-title>Список геозон</v-toolbar-title>
               <v-spacer />
-              <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    icon
-                    v-on="on"
-                    @click="initializeZone"
-                  >
-                    <v-icon>mdi-plus-circle</v-icon>
-                  </v-btn>
-                </template>
-                <span>Добавить новую геозону</span>
-              </v-tooltip>
             </v-toolbar>
+            <div class="newGeoInput">
+              <v-text-field
+                v-model="newGeo"
+                label="Название новой геозоны"
+                outlined
+                @focus="showBtn = true"
+              />
+              <v-btn
+                v-if="showBtn"
+                icon
+                @click="createNewGeozone()"
+              >
+                <v-icon>mdi-plus-circle</v-icon>
+              </v-btn>
+            </div>
             <v-divider />
             <v-list-item-group
+              ref="geosoneItems"
               color="primary"
             >
               <v-list-item
@@ -138,11 +142,13 @@
     },
     data () {
       return {
+        newGeo: '',
         createZone: false,
         geozones: [
           { name: 'a' },
           { name: 'b' },
         ],
+        showBtn: false,
       }
     },
     computed: {
@@ -154,6 +160,12 @@
         this.createZone = true
         // присвоить this.geozone geozoneTemplate из state и творить магию дальше
       },
+      createNewGeozone () {
+        // v-item--active v-list-item--active
+        this.geozones.push({ name: this.newGeo })
+        this.showBtn = false
+        this.reviewZone({ name: this.newGeo })
+      },
       reviewZone (item) {
         this.geozone.isShow = true
         this.geozone.name = item.name
@@ -161,3 +173,15 @@
     },
   }
 </script>
+
+<style lang="scss" scoped>
+.newGeoInput {
+  position: relative;
+
+  .v-btn {
+    position: absolute;
+    top: 10px;
+    right:0;
+  }
+}
+</style>>
