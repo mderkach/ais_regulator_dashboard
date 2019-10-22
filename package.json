@@ -1,7 +1,8 @@
 {
-  "name": "vuetify-material-dashboard",
+  "name": "ais",
   "version": "2.0.0",
   "private": true,
+  "author": "Mikhail Derkach",
   "scripts": {
     "dev": "vue-cli-service serve --open --fix",
     "build": "vue-cli-service build",

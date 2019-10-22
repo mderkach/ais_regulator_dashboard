@@ -8,4 +8,36 @@ export default {
   chooseCarToTrack: null,
   chooseTrackToChange: null,
   mapTracks: [],
+  geozone: {
+    name: '',
+    isShow: false,
+    controlPoints: {
+      model: '',
+      items: [],
+    },
+    routes: {
+      model: '',
+      items: [],
+    },
+    drivers: {
+      model: '',
+      items: [],
+    },
+  },
+  geozoneTemplate: {
+    name: '',
+    isShow: false,
+    controlPoints: {
+      model: '',
+      items: [],
+    },
+    routes: {
+      model: '',
+      items: [],
+    },
+    drivers: {
+      model: '',
+      items: [],
+    },
+  },
 }

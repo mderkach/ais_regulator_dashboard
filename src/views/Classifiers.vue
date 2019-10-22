@@ -95,28 +95,3 @@
     },
   }
 </script>
-
-<style lang="scss">
-.classifiers {
-  &-sidebar {
-    position: relative;
-    top: 0;
-    width: 100%;
-    max-height: 85vh;
-    border-radius: 4px;
-
-    &.side-active {
-      left: 0;
-    }
-  }
-
-  &-table {
-    &-wrapper {
-      width: 100%;
-      max-height: 85vh;
-      overflow: hidden;
-      border-radius: 4px;
-    }
-  }
-}
-</style>

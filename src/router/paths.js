@@ -26,4 +26,9 @@ export default [
     name: 'Классификаторы',
     view: 'Classifiers',
   },
+  {
+    path: '/geozones',
+    name: 'Геозоны',
+    view: 'Geozones',
+  },
 ]

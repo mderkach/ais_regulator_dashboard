@@ -69,7 +69,9 @@
       <l-tile-layer :url="url" />
     </l-map>
     <controls />
-    <map-sidebar>
+    <map-sidebar
+      :style="'max-height: 85vh; height: 100%; top: 50%; transform: translateY(-50%);'"
+    >
       <v-list
         v-if="pointsReady"
         nav
