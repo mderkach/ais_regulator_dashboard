@@ -22,7 +22,7 @@
   position: absolute;
   z-index: 400;
   max-height: calc(100% - 10px);
-  width: 300px;
+  width: 350px;
   top: 10px;
   overflow-y: scroll;
   
@@ -41,7 +41,8 @@
   }
 
   &-left {
-      left: 10px; 
+      left: -40px; 
+      padding-left: 50px;
       
       & > div{ 
         position: relative;
@@ -51,7 +52,8 @@
   }
 
   &-right {
-      right: 10px;
+      right: -40px;
+      padding-right: 50px;
 
       & > div{ 
         position: relative;

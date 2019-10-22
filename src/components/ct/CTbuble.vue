@@ -4,7 +4,7 @@
       dark
       class="point-buble__card"
     >
-      <v-form>
+      <v-form @submit.prevent="createMarker($event)">
         <v-container fluid>
           <v-row>
             <v-col cols="12">
@@ -32,7 +32,6 @@
                       v-model="point[input.name]"
                       dark
                       :label="input.label"
-                      outlined
                     />
                   </template>
                   <template v-if="input.isSelect">
@@ -42,7 +41,6 @@
                       dark
                       :items="input.options"
                       :label="input.label"
-                      outlined
                     />
                   </template>
                 </v-col>
@@ -62,7 +60,7 @@
                   class="point-buble__button"
                   type="button"
                   data-action="delete"
-                  @click="deleteMarker(bubleID)"
+                  @click="deleteMarker()"
                 >
                   Удалить
                 </button>
@@ -70,7 +68,7 @@
                   class="point-buble__button"
                   type="button"
                   data-action="cancel"
-                  @click="closeMarker(bubleID)"
+                  @click="closeMarker()"
                 >
                   Отмена
                 </button>
@@ -84,11 +82,32 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import { mapGetters } from 'vuex'
+
   export default {
     name: 'Buble',
+    props: {
+      isChangeMode: {
+        type: Boolean,
+        default: false,
+      },
+      point: {
+        type: Object,
+        default: () => ({
+          name: '',
+          type: '',
+          direction: '',
+          longtitude: 0,
+          latitude: 0,
+          radius: 0,
+          address: '',
+          id: null,
+        }),
+      },
+    },
     data () {
       return {
-        isChangeMode: false,
         inputs: [
           {
             name: 'name',
@@ -105,10 +124,10 @@
             name: 'direction',
             label: 'Направление',
             isSelect: true,
-            options: ['Туда', 'Сюда'],
+            options: ['Прямое', 'Обратное'],
           },
           {
-            name: 'longitude',
+            name: 'longtitude',
             label: 'Широта',
             isSelect: false,
           },
@@ -128,35 +147,49 @@
             isSelect: false,
           },
         ],
-        point: {
-          name: 'Вот',
-          type: 'Остановка',
-          direction: 'Туда',
-          longitude: 123,
-          latitude: 99,
-          radius: 3,
-          address: 'asd qwe',
-        },
-        defaultPoint: {
-          name: '',
-          type: '',
-          direction: '',
-          longitude: 0,
-          latitude: 0,
-          radius: 0,
-          address: '',
-        },
       }
+    },
+    computed: {
+      ...mapGetters(['sessionID']),
     },
     methods: {
       createMarker: function (ev) {
-        // userLocationBus.$emit('createWaypoint', ev)
+        axios
+          .get('http://194.58.104.20/SaveControlPoint.php', {
+            params: {
+              sessionId: this.sessionID,
+              name: this.point.name,
+              type: this.point.type === 'Остановка' ? 0 : 1,
+              latitude: this.point.latitude,
+              longitude: this.point.longtitude,
+              radius: this.point.radius,
+              address: this.point.address,
+              direction_id: this.point.direction === 'Прямое' ? 0 : 1,
+              id: this.point.id,
+            },
+          })
+          .then(res => {
+            if (res.data[0].Result) {
+              this.$emit('refresh')
+            }
+          })
       },
-      closeMarker: function (id) {
-        // userLocationBus.$emit('closePointPopup', id)
+      closeMarker: function () {
+        this.$emit('close')
       },
       deleteMarker: function (id) {
-        // userLocationBus.$emit('deleteWaypoint', id)
+        axios
+          .get('http://194.58.104.20/DeleteControlPoint.php', {
+            params: {
+              sessionId: this.sessionID,
+              id: this.point.id,
+            },
+          })
+          .then(res => {
+            if (res.data[0].Result) {
+              this.$emit('refresh')
+            }
+          })
       },
     },
   }
@@ -167,15 +200,13 @@
   &-buble {
     &__wrapper {
       //позиционирование только для демо режима
-      position: absolute;
-      top: 5vh;
-      left: 5vw;
       z-index: 500;
+      border-radius: 10px;
+      overflow: hidden;
     }
-
     &__card {
+      border-radius: 10px;
       width: 100%;
-      max-width: 70%;
       height: 100%;
       font-size: 17px;
     }

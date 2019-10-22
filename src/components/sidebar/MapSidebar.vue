@@ -15,12 +15,6 @@
         default: false,
       },
     },
-    created: function () {
-    },
-    mounted: function () {
-    },
-    methods: {
-    },
   }
 </script>
 

@@ -10,6 +10,9 @@ export default {
   setCarsGeoArray (state, payload) {
     state.carsGeo = payload
   },
+  setPointsArray (state, payload) {
+    state.points = payload
+  },
   chooseNewCarToTrack (state, payload) {
     state.chooseCarToTrack = payload
   },

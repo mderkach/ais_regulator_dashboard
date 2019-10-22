@@ -125,7 +125,6 @@
         zoom: 13,
         isCarsReady: false,
         interval: null,
-        opt: [],
         cars: [],
       }
     },
@@ -153,30 +152,12 @@
       },
     },
     created: function () {
-      axios
-        .get('http://194.58.104.20/GetVehicles.php', {
-          params: {
-            sessionId: this.sessionID,
-          },
-        })
-        .then(res => {
-          let carsArr = res.data
-          this.cars = carsArr
-        }).then(() => {
-          axios
-            .get('http://194.58.104.20/GetVehicleLastLocations.php', {
-              params: {
-                sessionId: this.$store.state.sessionID,
-              },
-            })
-            .then(res => {
-              let carsGeoArr = []
-              res.data.forEach(e => {
-                carsGeoArr[e.vehicleId] = [e.latitude, e.longitude]
-              })
-              this.$store.commit('setCarsGeoArray', carsGeoArr)
-            })
-        })
+      if (this.sessionId) {
+        this.reloadCars()
+      } else {
+        setTimeout(
+          this.reloadCars(), 100)
+      }
     },
     destroyed: function () {
       clearInterval(this.interval)
@@ -185,6 +166,32 @@
     methods: {
       zoomUpdated (zoom) {
         this.zoom = zoom
+      },
+      reloadCars () {
+        axios
+          .get('http://194.58.104.20/GetVehicles.php', {
+            params: {
+              sessionId: this.sessionID,
+            },
+          })
+          .then(res => {
+            let carsArr = res.data
+            this.cars = carsArr
+          }).then(() => {
+            axios
+              .get('http://194.58.104.20/GetVehicleLastLocations.php', {
+                params: {
+                  sessionId: this.$store.state.sessionID,
+                },
+              })
+              .then(res => {
+                let carsGeoArr = []
+                res.data.forEach(e => {
+                  carsGeoArr[e.vehicleId] = [e.latitude, e.longitude]
+                })
+                this.$store.commit('setCarsGeoArray', carsGeoArr)
+              })
+          })
       },
       centerUpdated (center) {
         this.mapCenter = center

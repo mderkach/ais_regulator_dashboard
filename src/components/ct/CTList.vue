@@ -10,6 +10,10 @@
 <script>
   export default {
     props: {
+      points: {
+        type: Array,
+        default: new Array([]),
+      },
     },
     data () {
       return {
