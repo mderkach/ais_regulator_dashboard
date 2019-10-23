@@ -9,5 +9,6 @@ export default {
   chooseCarToTrack: state => state.chooseCarToTrack,
   chooseTrackToChange: state => state.chooseTrackToChange,
   mapTracks: state => state.mapTracks,
+  geozones: state => state.geozones,
   getCarTracks: state => id => state.mapTracks.filter(x => x.vehicleId === id),
 }
