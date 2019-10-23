@@ -20,7 +20,7 @@
                 @focus="showBtn = true"
               />
               <v-btn
-                v-if="filterWord"
+                v-if="filterWord && !geozones.find(x => x.name === filterWord)"
                 icon
                 @click="createNewGeozone()"
               >
