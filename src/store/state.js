@@ -8,6 +8,7 @@ export default {
   chooseCarToTrack: null,
   chooseTrackToChange: null,
   mapTracks: [],
+  geozones: [],
   geozone: {
     name: '',
     isShow: false,

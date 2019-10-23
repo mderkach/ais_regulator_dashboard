@@ -134,6 +134,7 @@
   import mapSidebar from '../components/sidebar/MapSidebar'
   // eslint-disable-next-line
   import { mapState, mapGetters, mapMutations } from 'vuex'
+  import axios from 'axios'
 
   export default {
     name: 'Geozones',
@@ -144,20 +145,13 @@
       return {
         newGeo: '',
         createZone: false,
-        geozones: [
-          { name: 'Ставрополь' },
-          { name: 'Михайловск' },
-          { name: 'село Александровское' },
-          { name: 'село Грушевое' },
-          { name: 'озеро Егорлык' },
-          { name: 'Серега' },
-        ],
         felterWord: '',
         showBtn: false,
         feilteredList: [],
       }
     },
     computed: {
+      ...mapGetters(['geozones']),
       ...mapState(['geozone', 'defaultGeozone']),
     },
     watch: {
@@ -166,7 +160,14 @@
       },
     },
     created: function () {
-      this.feilteredList = this.geozones
+      axios
+        .get('http://194.58.104.20/GetGeozones.php')
+        .then(res => {
+          this.setNewGeoArr(res.data)
+        }).then(() => {
+          console.log(this.geozones)
+          this.feilteredList = this.geozones
+        })
     },
     methods: {
       initializeZone () {
@@ -176,7 +177,7 @@
       },
       createNewGeozone () {
         // v-item--active v-list-item--active
-        this.geozones.push({ name: this.felterWord })
+        // this.geozones.push({ name: this.felterWord })
         this.feilteredList = this.geozones.filter(x => x.name.indexOf(this.felterWord, 0) !== -1)
         this.showBtn = false
         this.reviewZone({ name: this.felterWord })
@@ -185,6 +186,7 @@
         this.geozone.isShow = true
         this.geozone.name = item.name
       },
+      ...mapMutations(['setNewGeoArr']),
     },
   }
 </script>

@@ -30,4 +30,7 @@ export default {
     const ind = state.mapTracks.indexOf(state.mapTracks.find(x => x.trackId === payload.id))
     state.mapTracks[ind] = payload.track
   },
+  setNewGeoArr (state, payload) {
+    this.state.geozones = payload
+  },
 }
