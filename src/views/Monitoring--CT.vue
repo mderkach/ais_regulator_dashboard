@@ -161,7 +161,6 @@
             this.choosePnt = pnt
           }
         } else if (id === -2) {
-          console.log('awdawd')
           this.$refs['point' + id][0].mapObject.openPopup()
         }
       },
@@ -190,7 +189,7 @@
           this.$refs['point' + this.choosePntId][0].mapObject.closePopup()
         }
         this.pointsLoad = true
-        this.showPntCircle = false
+        this.chooseNewPnt(this.choosePntId)
         axios
           .get('http://194.58.104.20/GetControlPoints.php', {
             params: {
