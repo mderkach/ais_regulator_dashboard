@@ -14,13 +14,13 @@
             </v-toolbar>
             <div class="newGeoInput">
               <v-text-field
-                v-model="newGeo"
-                label="Название новой геозоны"
+                v-model="felterWord"
+                :label="`Название${feilteredList.length === 0? ' новой ' : ' '}геозоны`"
                 outlined
                 @focus="showBtn = true"
               />
               <v-btn
-                v-if="showBtn"
+                v-if="feilteredList.length === 0"
                 icon
                 @click="createNewGeozone()"
               >
@@ -33,7 +33,7 @@
               color="primary"
             >
               <v-list-item
-                v-for="(item, i) in geozones"
+                v-for="(item, i) in feilteredList"
                 :key="i"
                 @click="reviewZone(item)"
               >
@@ -140,19 +140,33 @@
     components: {
       mapSidebar,
     },
-    data () {
+    data: vm => {
       return {
         newGeo: '',
         createZone: false,
         geozones: [
-          { name: 'a' },
-          { name: 'b' },
+          { name: 'Ставрополь' },
+          { name: 'Михайловск' },
+          { name: 'село Александровское' },
+          { name: 'село Грушевое' },
+          { name: 'озеро Егорлык' },
+          { name: 'Серега' },
         ],
+        felterWord: '',
         showBtn: false,
+        feilteredList: [],
       }
     },
     computed: {
       ...mapState(['geozone', 'defaultGeozone']),
+    },
+    watch: {
+      felterWord (val) {
+        this.feilteredList = this.geozones.filter(x => x.name.indexOf(this.felterWord, 0) !== -1)
+      },
+    },
+    created: function () {
+      this.feilteredList = this.geozones
     },
     methods: {
       initializeZone () {
@@ -162,9 +176,10 @@
       },
       createNewGeozone () {
         // v-item--active v-list-item--active
-        this.geozones.push({ name: this.newGeo })
+        this.geozones.push({ name: this.felterWord })
+        this.feilteredList = this.geozones.filter(x => x.name.indexOf(this.felterWord, 0) !== -1)
         this.showBtn = false
-        this.reviewZone({ name: this.newGeo })
+        this.reviewZone({ name: this.felterWord })
       },
       reviewZone (item) {
         this.geozone.isShow = true
