@@ -120,6 +120,7 @@
         choosePntId: -1,
         choosePnt: {},
         showPntCircle: false,
+        geozones: [],
       }
     },
     computed: {
@@ -134,6 +135,13 @@
       },
     },
     created: function () {
+      axios
+        .get('http://194.58.104.20/GetGeozones.php')
+        .then(res => {
+          this.geozones = res.data
+        }).then(() => {
+          this.geozones.push({ name: 'Не задано', id: '0' })
+        })
       setTimeout(
         this.reloadPoints, 100)
     },
@@ -161,7 +169,6 @@
             this.choosePnt = pnt
           }
         } else if (id === -2) {
-          console.log('awdawd')
           this.$refs['point' + id][0].mapObject.openPopup()
         }
       },
@@ -209,6 +216,10 @@
               radius: 0,
               address: '',
               id: -2,
+              geozone_id: 0,
+            })
+            arr.forEach(el => {
+              el.geozone = this.geozones.find(x => parseInt(x.id, 10) === el.geozone_id).name
             })
             this.setPointsArray(arr)
             this.pointsLoad = false

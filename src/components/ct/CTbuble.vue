@@ -25,16 +25,24 @@
                   v-for="(input, i) in inputs"
                   :key="i"
                   cols="12"
-                  md="4"
+                  :md="input.isGeozone ? '12' : '4'"
                 >
-                  <template v-if="!input.isSelect">
+                  <template v-if="input.isGeozone">
+                    <v-text-field
+                      v-model="point[input.name]"
+                      dark
+                      disabled
+                      :label="input.label"
+                    />
+                  </template>
+                  <template v-else-if="!input.isSelect">
                     <v-text-field
                       v-model="point[input.name]"
                       dark
                       :label="input.label"
                     />
                   </template>
-                  <template v-if="input.isSelect">
+                  <template v-else-if="input.isSelect">
                     <v-select
                       v-model="point[input.name]"
                       :value="point[input.name]"
@@ -146,11 +154,21 @@
             label: 'Адрес',
             isSelect: false,
           },
+          {
+            name: 'geozone',
+            label: 'Геозона',
+            isSelect: false,
+            isGeozone: true,
+          },
         ],
+        geozones: [],
       }
     },
     computed: {
       ...mapGetters(['sessionID']),
+    },
+    created: function () {
+
     },
     methods: {
       createMarker: function (ev) {
