@@ -108,7 +108,10 @@
           <v-col cols="12">
             <v-row>
               <v-col cols="4">
-                <v-btn block>
+                <v-btn
+                  block
+                  @click="saveChanges"
+                >
                   Сохранить
                 </v-btn>
               </v-col>
@@ -145,13 +148,13 @@
       return {
         newGeo: '',
         createZone: false,
-        felterWord: '',
+        filterWord: '',
         showBtn: false,
         filteredList: [],
       }
     },
     computed: {
-      ...mapGetters(['geozones']),
+      ...mapGetters(['geozones', 'points', 'sessionID', 'pointById']),
       ...mapState(['geozone', 'defaultGeozone']),
     },
     watch: {
@@ -161,12 +164,20 @@
     },
     created: function () {
       axios
+        .get('http://194.58.104.20/GetControlPoints.php', {
+          params: {
+            sessionId: this.sessionID,
+          },
+        })
+        .then(res => {
+          this.setPointsArray(res.data[0].ControlPoints)
+        })
+      axios
         .get('http://194.58.104.20/GetGeozones.php')
         .then(res => {
           this.setNewGeoArr(res.data)
         }).then(() => {
-          console.log(this.geozones)
-          this.feilteredList = this.geozones
+          this.filteredList = this.geozones
         })
     },
     methods: {
@@ -182,11 +193,55 @@
         this.showBtn = false
         this.reviewZone({ name: this.filterWord })
       },
+      saveChanges () {
+        let arr = this.geozone.controlPoints.model
+        let items = this.geozone.controlPoints.items
+        let arrPntToDelete = items.filter(x => !arr.find(y => y === x.value))
+        arrPntToDelete.forEach(el => {
+          if (this.pointById(el.value).geozone_id == this.geozone.id) {
+            let par = this.pointById(el.value)
+            par.geozone_id = 0
+            par.sessionId = this.sessionID
+            par.longitude = par.longtitude
+            delete par.longtitude
+            axios
+              .get('http://194.58.104.20/SaveControlPoint.php', {
+                params: par,
+              })
+              .then(res => {
+                if (res.data[0].Result) {
+                  this.$emit('refresh')
+                }
+              })
+          }
+        })
+        arr.forEach(el => {
+          let par = this.pointById(el)
+          par.geozone_id = this.geozone.id
+          par.sessionId = this.sessionID
+          par.longitude = par.longtitude
+          delete par.longtitude
+          axios
+            .get('http://194.58.104.20/SaveControlPoint.php', {
+              params: par,
+            })
+            .then(res => {
+              if (res.data[0].Result) {
+                this.$emit('refresh')
+              }
+            })
+        })
+      },
       reviewZone (item) {
         this.geozone.isShow = true
         this.geozone.name = item.name
+        this.geozone.id = item.id
+        let pntToGeo = this.points.filter(x => x.geozone_id == item.id).map(x => { return { text: x.name, value: x.id } })
+        let pntFree = this.points.filter(x => x.geozone_id === 0).map(x => { return { text: x.name, value: x.id } })
+        this.geozone.controlPoints.model = pntToGeo
+        this.geozone.controlPoints.items = pntToGeo.concat(pntFree)
       },
-      ...mapMutations(['setNewGeoArr']),
+      ...mapMutations(['setNewGeoArr', 'setPointsArray']),
     },
   }
 </script>

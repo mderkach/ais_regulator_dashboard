@@ -165,6 +165,7 @@
               radius: this.point.radius,
               address: this.point.address,
               direction_id: this.point.direction === 'Прямое' ? 0 : 1,
+              geozone_id: 0,
               id: this.point.id === -2 ? null : this.point.id,
             },
           })

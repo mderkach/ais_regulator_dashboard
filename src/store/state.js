@@ -11,6 +11,7 @@ export default {
   geozones: [],
   geozone: {
     name: '',
+    id: null,
     isShow: false,
     controlPoints: {
       model: '',
