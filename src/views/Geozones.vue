@@ -198,7 +198,7 @@
         let items = this.geozone.controlPoints.items
         let arrPntToDelete = items.filter(x => !arr.find(y => y === x.value))
         arrPntToDelete.forEach(el => {
-          if (this.pointById(el.value).geozone_id == this.geozone.id) {
+          if (this.pointById(el.value).geozone_id === this.geozone.id) {
             let par = this.pointById(el.value)
             par.geozone_id = 0
             par.sessionId = this.sessionID
@@ -236,7 +236,7 @@
         this.geozone.isShow = true
         this.geozone.name = item.name
         this.geozone.id = item.id
-        let pntToGeo = this.points.filter(x => x.geozone_id == item.id).map(x => { return { text: x.name, value: x.id } })
+        let pntToGeo = this.points.filter(x => x.geozone_id === item.id).map(x => { return { text: x.name, value: x.id } })
         let pntFree = this.points.filter(x => x.geozone_id === 0).map(x => { return { text: x.name, value: x.id } })
         this.geozone.controlPoints.model = pntToGeo
         this.geozone.controlPoints.items = pntToGeo.concat(pntFree)
