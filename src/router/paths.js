@@ -17,6 +17,11 @@ export default [
     view: 'Monitoring--Car',
   },
   {
+    path: '/monitor-path',
+    name: 'Маршруты',
+    view: 'Monitoring--Path',
+  },
+  {
     path: '/monitor-ct',
     name: 'Управление контрольными точками',
     view: 'Monitoring--CT',
