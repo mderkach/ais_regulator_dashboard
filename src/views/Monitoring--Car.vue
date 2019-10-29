@@ -1,101 +1,127 @@
 <template>
-  <div class="map">
-    <l-map
-      ref="osm"
-      style="height: calc(100vh - 88px); width: 100%"
-      :zoom="zoom"
-      :center="mapCenter"
-      :options="{ zoomControl: false }"
-      @update:zoom="zoomUpdated"
-      @update:center="centerUpdated"
-    >
-      <l-marker
-        ref="myGeo"
-        :lat-lng="marker"
-      />
-      <div
-        v-if="isCarsReady"
-        class="marker-wrapper"
+  <v-container
+    fluid
+    style="padding: 0"
+  >
+    <v-row>
+      <v-col
+        cols="12"
+        style="padding: 0"
       >
-        <l-marker
-          v-for="(car, i) in cars"
-          :key="i"
-          :ref="car.vehicleId"
-          :lat-lng="carsGeo[car.vehicleId]"
+        <l-map
+          ref="osm"
+          style="height: calc(100vh - 88px); width: 100%"
+          :zoom="zoom"
+          :center="mapCenter"
+          :options="{ zoomControl: false }"
+          @update:zoom="zoomUpdated"
+          @update:center="centerUpdated"
         >
-          <l-icon
-            :icon-anchor="iconAnchor"
-          >
-            <span class="map-marker-text">{{ car.stateNumber }}</span>
-            <img
-              src="../assets/truck-front.png"
-            >
-          </l-icon>
-        </l-marker>
-      </div>
-      <div v-if="mapTracks[0]">
-        <l-feature-group
-          v-for="(track, i) in mapTracks"
-          :key="i"
-        >
-          <l-polyline
-            :lat-lngs="track.latLngs"
-            :color="track.color"
-            :weight="track.weight"
-            @click="chooseNewTrackToChange(track.trackId)"
+          <l-marker
+            ref="myGeo"
+            :lat-lng="marker"
           />
-          <l-marker
-            :lat-lng="track.latLngs[0]"
+          <div
+            v-if="isCarsReady"
+            class="marker-wrapper"
           >
-            <l-icon
-              :icon-anchor="iconMarkerAnchor"
+            <l-marker
+              v-for="(car, i) in cars"
+              :key="i"
+              :ref="car.vehicleId"
+              :lat-lng="carsGeo[car.vehicleId]"
             >
-              <v-icon
-                large
-                color="green darken-2"
+              <l-icon
+                :icon-anchor="iconAnchor"
               >
-                mdi-map-marker
-              </v-icon>
-            </l-icon>
-          </l-marker>
-          <l-marker
-            :lat-lng="track.latLngs[track.latLngs.length - 1]"
-          >
-            <l-icon
-              :icon-anchor="iconMarkerAnchor"
+                <span class="map-marker-text">{{ car.stateNumber }}</span>
+                <img
+                  src="../assets/truck-front.png"
+                >
+              </l-icon>
+            </l-marker>
+          </div>
+          <div v-if="mapTracks[0]">
+            <l-feature-group
+              v-for="(track, i) in mapTracks"
+              :key="i"
             >
-              <v-icon
-                large
-                color="red darken-2"
+              <l-polyline
+                :lat-lngs="track.latLngs"
+                :color="track.color"
+                :weight="track.weight"
+                @click="chooseNewTrackToChange(track.trackId)"
+              />
+              <l-marker
+                :lat-lng="track.latLngs[0]"
               >
-                mdi-map-marker
-              </v-icon>
-            </l-icon>
-          </l-marker>
-        </l-feature-group>
-      </div>
-      <l-tile-layer :url="url" />
-    </l-map>
-    <controls />
-    <sidebar>
-      <car-list
-        v-if="isCarsReady"
-        :cars="cars"
-        :choose-car-mode="chooseCarToTrack != null"
-        @chooseCar="centerUpdated"
-      />
-    </sidebar>
-    <sidebar
-      :right="true"
-    >
-      <car-track-picker
-        v-if="chooseCarToTrack != null"
-      />
-      <car-track-settings
-        v-if="chooseTrackToChange != null"
-      />
-    </sidebar>
-  </div>
+                <l-icon
+                  :icon-anchor="iconMarkerAnchor"
+                >
+                  <v-icon
+                    large
+                    color="green darken-2"
+                  >
+                    mdi-map-marker
+                  </v-icon>
+                </l-icon>
+              </l-marker>
+              <l-marker
+                :lat-lng="track.latLngs[track.latLngs.length - 1]"
+              >
+                <l-icon
+                  :icon-anchor="iconMarkerAnchor"
+                >
+                  <v-icon
+                    large
+                    color="red darken-2"
+                  >
+                    mdi-map-marker
+                  </v-icon>
+                </l-icon>
+              </l-marker>
+            </l-feature-group>
+          </div>
+          <l-tile-layer :url="url" />
+        </l-map>
+        <controls />
+      </v-col>
+      <v-col
+        cols="2"
+        lg="2"
+        md="3"
+        sm="4"
+        class="map-sidebar-col-left"
+      >
+        <sidebar>
+          <car-list
+            v-if="isCarsReady"
+            :cars="cars"
+            :choose-car-mode="chooseCarToTrack != null"
+            @chooseCar="centerUpdated"
+          />
+        </sidebar>
+      </v-col>
+      <v-col
+        cols="3"
+        lg="3"
+        md="5"
+        sm="4"
+        class="map-sidebar-col-right"
+      >
+        <sidebar
+          :right="true"
+        >
+          <car-track-picker
+            v-if="chooseCarToTrack != null"
+          />
+          <car-track-settings
+            v-if="chooseTrackToChange != null"
+          />
+        </sidebar>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

@@ -14,23 +14,41 @@
   }
 
   to {
-    left: 0;
+    left: 10px;
   }
+}
+.map-sidebar-col {
+  
+  &-left {
+    padding: 0; 
+    position: absolute; 
+    top: 10px; 
+    left: 0; 
+    width: 100%;
+  }
+
+  &-right {
+    padding: 0; 
+    position: absolute; 
+    top: 10px; 
+    right: 0; 
+    width: 100%;
+  }
+
 }
 
 .map-sidebar-wrapper{
-  position: absolute;
+  position: relative;
   z-index: 400;
-  max-height: calc(100% - 10px);
-  width: 350px;
-  top: 10px;
+  max-height: 85vh;
   overflow-y: scroll;
+  width: 100%;
 
   &::-webkit-scrollbar {
     display: none;
   }
 
-
+  
   & > div{
     margin-bottom: 20px;
 
@@ -40,11 +58,12 @@
     }
   }
 
+
   &-left {
-      left: -40px;
-      padding-left: 50px;
 
       & > div{
+        width: calc(100% - 10px);
+        left: 10px;
         position: relative;
         animation-duration: 0.8s;
         animation-name: slidein-left;
@@ -52,10 +71,9 @@
   }
 
   &-right {
-      right: -40px;
-      padding-right: 50px;
-
       & > div{
+        width: calc(100% - 10px);
+        right: 0;
         position: relative;
         animation-duration: 0.8s;
         animation-name: slidein-right;
