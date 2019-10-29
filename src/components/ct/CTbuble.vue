@@ -29,7 +29,7 @@
                 >
                   <template v-if="input.isGeozone">
                     <v-text-field
-                      v-model="point[input.name]"
+                      v-model="point.geozone"
                       dark
                       disabled
                       :label="input.label"
@@ -155,7 +155,7 @@
             isSelect: false,
           },
           {
-            name: 'geozone',
+            name: 'geozone_id',
             label: 'Геозона',
             isSelect: false,
             isGeozone: true,

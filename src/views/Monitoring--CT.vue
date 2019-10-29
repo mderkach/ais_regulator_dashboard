@@ -53,7 +53,7 @@
     </l-map>
     <controls />
     <map-sidebar
-      :style="'max-height: 85vh; height: 100%; top: 50%; transform: translateY(-50%);'"
+      :style="'max-height: 85vh; top: 10px; position: absolute'"
     >
       <v-list
         v-if="pointsReady"
@@ -71,25 +71,36 @@
             style="margin: auto"
           />
         </div>
-        <v-list-item-group
+        <v-list
           v-else
-          color="primary"
+          color="white"
         >
-          <div
-            v-for="(point, i) in points"
+          <v-list-group
+            v-for="(geozone, i) in filteredGeozones"
             :key="i"
-            class="ct-list-items-wrapper"
+            no-action
+            color="primary"
+            prepend-icon="mdi-grain"
           >
-            <v-list-item
-              v-if="point.id != -2"
-              @click="chooseNewPnt(point.id)"
+            <template v-slot:activator>
+              <v-list-item-title>{{ geozone.name }}</v-list-item-title>
+            </template>
+            <div
+              v-for="(point, j) in points.filter(p => p.geozone_id ===geozone.id)"
+              :key="j"
+              class="ct-list-items-wrapper"
             >
-              <v-list-item-content>
-                <v-list-item-title v-text="`${point.name} (${point.direction_id ? 'Обратно' : 'Туда'})`" />
-              </v-list-item-content>
-            </v-list-item>
-          </div>
-        </v-list-item-group>
+              <v-list-item
+                v-if="point.id != -2"
+                @click="chooseNewPnt(point.id)"
+              >
+                <v-list-item-content>
+                  <v-list-item-title v-text="`${point.name} (${point.direction_id ? 'Обратно' : 'Туда'})`" />
+                </v-list-item-content>
+              </v-list-item>
+            </div>
+          </v-list-group>
+        </v-list>
       </v-list>
     </map-sidebar>
   </div>
@@ -121,6 +132,7 @@
         choosePnt: {},
         showPntCircle: false,
         geozones: [],
+        filteredGeozones: [],
       }
     },
     computed: {
@@ -220,6 +232,18 @@
             })
             arr.forEach(el => {
               el.geozone = this.geozones.find(x => parseInt(x.id, 10) === el.geozone_id).name
+              if (!this.filteredGeozones.find(x => x.id === el.geozone_id)) {
+                this.filteredGeozones.push({ name: el.geozone, id: el.geozone_id })
+              }
+              this.filteredGeozones.sort((a, b) => {
+                if (a.id > b.id) {
+                  return -1
+                } else if (a.id < b.id) {
+                  return 1
+                } else {
+                  return 0
+                }
+              })
             })
             this.setPointsArray(arr)
             this.pointsLoad = false
@@ -241,5 +265,8 @@
   }
   .custom .leaflet-popup-content-wrapper .leaflet-popup-content {
     margin: 0;
+  }
+  .map {
+    position: relative;
   }
 </style>

@@ -242,19 +242,30 @@
         this.setNewCarMapCenter(this.carsGeo[id])
       },
       getTrack () {
+        let from, to
         if (this.isHour) {
-          console.log('nothig')
+          let date = new Date()
+          let fromHours = date.getHours() - 1
+          let fromDate = date.getDate()
+          if (fromHours < 0) {
+            fromHours = 24 + fromHours
+            fromDate -= 1
+          }
+          from = `${fromDate}-${date.getMonth() +
+            1}-${date.getFullYear()} ${fromHours}:${date.getMinutes()}`
+          to = `${date.getDate()}-${date.getMonth() +
+            1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
         } else {
           let fromTime = `${this.hoursFrom}:${this.minutesFrom}`
           let toTime = `${this.hoursTo}:${this.minutesTo}`
-          let from = `${fromTime.length > 1 ? fromTime : ''} ${
+          from = `${fromTime.length > 1 ? fromTime : ''} ${
             this.date
           }`
-          let to = `${toTime.length > 1 ? toTime : ''} ${
+          to = `${toTime.length > 1 ? toTime : ''} ${
             this.date2
           }`
-          this.fetchTrack(from, to)
         }
+        this.fetchTrack(from, to)
       },
       fetchTrack (fromTime, toTime) {
         axios

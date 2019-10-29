@@ -28,7 +28,19 @@
               </v-btn>
             </div>
             <v-divider />
+            <div
+              v-if="geozonesLoad"
+              class="loadingPoints"
+              style="display: flex"
+            >
+              <v-progress-circular
+                indeterminate
+                color="primary"
+                style="margin: auto"
+              />
+            </div>
             <v-list-item-group
+              v-else
               ref="geosoneItems"
               color="primary"
             >
@@ -121,7 +133,10 @@
                 </v-btn>
               </v-col>
               <v-col cols="4">
-                <v-btn block>
+                <v-btn
+                  block
+                  @click="deleteGeozone(geozone.id)"
+                >
                   Удалить
                 </v-btn>
               </v-col>
@@ -138,6 +153,7 @@
   // eslint-disable-next-line
   import { mapState, mapGetters, mapMutations } from 'vuex'
   import axios from 'axios'
+  // import { reject } from 'q'
 
   export default {
     name: 'Geozones',
@@ -151,6 +167,7 @@
         filterWord: '',
         showBtn: false,
         filteredList: [],
+        geozonesLoad: true,
       }
     },
     computed: {
@@ -163,22 +180,7 @@
       },
     },
     created: function () {
-      axios
-        .get('http://194.58.104.20/GetControlPoints.php', {
-          params: {
-            sessionId: this.sessionID,
-          },
-        })
-        .then(res => {
-          this.setPointsArray(res.data[0].ControlPoints)
-        })
-      axios
-        .get('http://194.58.104.20/GetGeozones.php')
-        .then(res => {
-          this.setNewGeoArr(res.data)
-        }).then(() => {
-          this.filteredList = this.geozones
-        })
+      this.refreshZones()
     },
     methods: {
       initializeZone () {
@@ -186,12 +188,59 @@
         this.createZone = true
         // присвоить this.geozone geozoneTemplate из state и творить магию дальше
       },
+      deleteGeozone (id) {
+        axios
+          .get('http://194.58.104.20/DeleteGeozone.php', {
+            params: {
+              id: id,
+            },
+          }).then((res) => {
+            if (res.data[0].Result) {
+              this.refreshZones().then(() => {
+                this.reviewZone(null)
+              })
+            }
+          })
+      },
+      refreshZones () {
+        return new Promise((resolve, reject) => {
+          this.geozonesLoad = true
+          axios
+            .get('http://194.58.104.20/GetGeozones.php')
+            .then(res => {
+              this.setNewGeoArr(res.data)
+            }).then(() => {
+              this.filteredList = this.geozones
+              this.geozonesLoad = false
+            }).then(() => {
+              axios
+                .get('http://194.58.104.20/GetControlPoints.php', {
+                  params: {
+                    sessionId: this.sessionID,
+                  },
+                })
+                .then(res => {
+                  this.setPointsArray(res.data[0].ControlPoints)
+                  resolve()
+                })
+            })
+        })
+      },
       createNewGeozone () {
-        // v-item--active v-list-item--active
-        // this.geozones.push({ name: this.felterWord })
-        this.feilteredList = this.geozones.filter(x => x.name.indexOf(this.felterWord, 0) !== -1)
-        this.showBtn = false
-        this.reviewZone({ name: this.filterWord })
+        axios
+          .get('http://194.58.104.20/SaveGeozone.php', {
+            params: {
+              name: this.filterWord,
+            },
+          }).then((res) => {
+            if (res.data[0].Result) {
+              this.refreshZones().then(() => {
+                this.showBtn = false
+                let name = this.filterWord
+                this.reviewZone(this.geozones.find(zone => zone.name === name))
+              })
+            }
+          })
       },
       saveChanges () {
         let arr = this.geozone.controlPoints.model
@@ -200,7 +249,6 @@
         arrPntToDelete.forEach(el => {
           if (this.pointById(el).geozone_id === parseInt(this.geozone.id, 10)) {
             let par = Object.assign({}, this.pointById(el))
-            console.log(par)
             par.geozone_id = 0
             par.sessionId = this.sessionID
             par.longitude = par.longtitude
@@ -232,15 +280,20 @@
               }
             })
         })
+        this.refreshZones()
       },
       reviewZone (item) {
-        this.geozone.isShow = true
-        this.geozone.name = item.name
-        this.geozone.id = item.id
-        let pntToGeo = this.points.filter(x => x.geozone_id === parseInt(item.id, 10)).map(x => { return { text: `${x.name}(${x.direction_id ? 'Обратное' : 'Прямое'})`, value: x.id } })
-        let pntFree = this.points.filter(x => x.geozone_id === 0).map(x => { return { text: `${x.name}(${x.direction_id ? 'Обратное' : 'Прямое'})`, value: x.id } })
-        this.geozone.controlPoints.model = pntToGeo
-        this.geozone.controlPoints.items = pntToGeo.concat(pntFree)
+        if (item == null) {
+          this.geozone.isShow = false
+        } else {
+          this.geozone.isShow = true
+          this.geozone.name = item.name
+          this.geozone.id = item.id
+          let pntToGeo = this.points.filter(x => x.geozone_id === parseInt(item.id, 10)).map(x => { return { text: `${x.name}(${x.direction_id ? 'Обратное' : 'Прямое'})`, value: x.id } })
+          let pntFree = this.points.filter(x => x.geozone_id === 0).map(x => { return { text: `${x.name}(${x.direction_id ? 'Обратное' : 'Прямое'})`, value: x.id } })
+          this.geozone.controlPoints.model = pntToGeo
+          this.geozone.controlPoints.items = pntToGeo.concat(pntFree)
+        }
       },
       ...mapMutations(['setNewGeoArr', 'setPointsArray']),
     },
@@ -257,4 +310,4 @@
     right:0;
   }
 }
-</style>>
+</style>
