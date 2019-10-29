@@ -7,7 +7,8 @@
     flat
     height="88"
   >
-    <v-toolbar-title class="tertiary--text font-weight-light align-self-center">
+    <!-- tertiary--text это раньше было тут -->
+    <v-toolbar-title class=" font-weight-light align-self-center">
       <v-btn
         v-if="responsive"
         dark
