@@ -9,11 +9,11 @@ export default [
     path: '',
     // Relative to /src/views
     view: 'Map',
-    name: 'Демо',
+    name: 'Карта',
   },
   {
     path: '/monitor-car',
-    name: 'Доступные трнаспортные стредства',
+    name: 'Доступные транспортные стредства',
     view: 'Monitoring--Car',
   },
   {

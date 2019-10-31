@@ -166,6 +166,7 @@
         createZone: false,
         filterWord: '',
         showBtn: false,
+        paths: [],
         filteredList: [],
         geozonesLoad: true,
       }
@@ -181,6 +182,10 @@
     },
     created: function () {
       this.refreshZones()
+      this.reloadPaths()
+    },
+    destroyed: function () {
+      this.reviewZone(null)
     },
     methods: {
       initializeZone () {
@@ -226,6 +231,31 @@
             })
         })
       },
+      reloadPaths (id) {
+        return new Promise((resolve, reject) => {
+          axios
+            .get('http://194.58.104.20/GetRoutes.php', {
+              params: {
+                sessionId: this.sessionID,
+              },
+            })
+            .then(res => {
+              this.paths = res.data.map(x => {
+                let newPath = Object.assign({}, x.RouteInfo)
+                newPath.straight = x.StraightDirection
+                newPath.reverse = x.ReverseDirection
+                newPath.straight = JSON.stringify(newPath.straight)
+                newPath.reverse = JSON.stringify(newPath.reverse)
+                return newPath
+              })
+              let path = null
+              if (id) {
+                path = res.data.find(x => x.RouteInfo.id === id)
+              }
+              resolve(path)
+            })
+        })
+      },
       createNewGeozone () {
         axios
           .get('http://194.58.104.20/SaveGeozone.php', {
@@ -243,10 +273,13 @@
           })
       },
       saveChanges () {
-        let arr = this.geozone.controlPoints.model
-        let items = this.geozone.controlPoints.items
-        let arrPntToDelete = items.filter(x => !arr.find(y => y === x.value)).map(x => x.value)
-        arrPntToDelete.forEach(el => {
+        let arrCT = this.geozone.controlPoints.model
+        if (arrCT[0].value) {
+          arrCT = arrCT.map(x => x.value)
+        }
+        let itemsCT = this.geozone.controlPoints.items
+        let arrPntToDeleteCT = itemsCT.filter(x => !arrCT.find(y => y === x)).map(x => x.value)
+        arrPntToDeleteCT.forEach(el => {
           if (this.pointById(el).geozone_id === parseInt(this.geozone.id, 10)) {
             let par = Object.assign({}, this.pointById(el))
             par.geozone_id = 0
@@ -264,7 +297,7 @@
               })
           }
         })
-        arr.forEach(el => {
+        arrCT.forEach(el => {
           let par = Object.assign({}, this.pointById(el))
           par.geozone_id = this.geozone.id
           par.sessionId = this.sessionID
@@ -272,6 +305,44 @@
           delete par.longtitude
           axios
             .get('http://194.58.104.20/SaveControlPoint.php', {
+              params: par,
+            })
+            .then(res => {
+              if (res.data[0].Result) {
+                this.$emit('refresh')
+              }
+            })
+        })
+
+        let arrRT = this.geozone.routes.model
+        if (arrRT[0].value) {
+          arrRT = arrRT.map(x => x.value)
+        }
+        let itemsRT = this.geozone.routes.items
+        let arrPntToDeleteRT = itemsRT.filter(x => !arrRT.find(y => y === x)).map(x => x.value)
+
+        arrPntToDeleteRT.forEach(el => {
+          if (this.paths.find(e => e.id === el).geozone_id === parseInt(this.geozone.id, 10)) {
+            let par = Object.assign({}, this.paths.find(e => e.id === el))
+            par.geozone_id = 0
+            par.sessionId = this.sessionID
+            axios
+              .get('http://194.58.104.20/SaveRoute.php', {
+                params: par,
+              })
+              .then(res => {
+                if (res.data[0].Result) {
+                  this.$emit('refresh')
+                }
+              })
+          }
+        })
+        arrRT.forEach(el => {
+          let par = Object.assign({}, this.paths.find(e => e.id === el))
+          par.geozone_id = this.geozone.id
+          par.sessionId = this.sessionID
+          axios
+            .get('http://194.58.104.20/SaveRoute.php', {
               params: par,
             })
             .then(res => {
@@ -289,10 +360,14 @@
           this.geozone.isShow = true
           this.geozone.name = item.name
           this.geozone.id = item.id
-          let pntToGeo = this.points.filter(x => x.geozone_id === parseInt(item.id, 10)).map(x => { return { text: `${x.name}(${x.direction_id ? 'Обратное' : 'Прямое'})`, value: x.id } })
-          let pntFree = this.points.filter(x => x.geozone_id === 0).map(x => { return { text: `${x.name}(${x.direction_id ? 'Обратное' : 'Прямое'})`, value: x.id } })
+          let pntToGeo = this.points.filter(x => x.geozone_id === parseInt(item.id, 10)).map(x => ({ text: `${x.name}(${x.direction_id ? 'Обратное' : 'Прямое'})`, value: x.id }))
+          let pntFree = this.points.filter(x => x.geozone_id === 0).map(x => ({ text: `${x.name}(${x.direction_id ? 'Обратное' : 'Прямое'})`, value: x.id }))
           this.geozone.controlPoints.model = pntToGeo
           this.geozone.controlPoints.items = pntToGeo.concat(pntFree)
+          let routeToGeo = this.paths.filter(x => x.geozone_id === parseInt(item.id, 10)).map(x => { return { text: x.name, value: x.id } })
+          let routeFree = this.paths.filter(x => x.geozone_id === 0).map(x => ({ text: x.name, value: x.id }))
+          this.geozone.routes.model = routeToGeo
+          this.geozone.routes.items = routeToGeo.concat(routeFree)
         }
       },
       ...mapMutations(['setNewGeoArr', 'setPointsArray']),
