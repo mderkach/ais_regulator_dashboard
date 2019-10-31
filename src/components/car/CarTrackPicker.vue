@@ -154,6 +154,7 @@
         <v-col
           cols="12"
           lg="12"
+          justify-self="center"
         >
           <v-checkbox
             v-model="isHour"
@@ -265,6 +266,7 @@
             this.date2
           }`
         }
+
         this.fetchTrack(from, to)
       },
       fetchTrack (fromTime, toTime) {

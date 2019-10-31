@@ -1,109 +1,127 @@
 <template>
-  <div class="map">
-    <l-map
-      ref="osm"
-      style="height: calc(100vh - 88px); width: 100%"
-      :zoom="zoom"
-      :center="mapCenter"
-      :options="{ zoomControl: false }"
-      @update:zoom="zoomUpdated"
-      @update:center="centerUpdated"
-      @click="mapClick($event)"
-    >
-      <l-marker
-        ref="myGeo"
-        :lat-lng="marker"
-      />
-      <l-circle
-        v-if="showPntCircle"
-        :lat-lng="[choosePnt.latitude,choosePnt.longtitude]"
-        :radius="choosePnt.radius ? parseInt(choosePnt.radius, 10) : 0"
-        :color="'red'"
-      />
-      <l-marker
-        v-for="(point, i) in points"
-        :key="i"
-        :ref="'point' + point.id"
-        :lat-lng="[point.latitude, point.longtitude]"
-        @click="chooseNewPnt(point.id)"
+  <v-container
+    fluid
+    style="padding: 0"
+  >
+    <v-row>
+      <v-col
+        cols="12"
+        style="padding: 0"
       >
-        <l-popup
-          v-if="point.id == choosePntId"
-          :options="{minWidth: '531px', closeButton: false, className: 'custom'}"
-          @ready="popupReady(point.id)"
+        <l-map
+          ref="osm"
+          style="height: calc(100vh - 88px); width: 100%"
+          :zoom="zoom"
+          :center="mapCenter"
+          :options="{ zoomControl: false }"
+          @update:zoom="zoomUpdated"
+          @update:center="centerUpdated"
+          @click="mapClick($event)"
         >
-          <c-tbubble
-            :point="choosePnt"
-            :is-change-mode="point.id != -2"
-            @close="chooseNewPnt(-1)"
-            @refresh="reloadPoints"
+          <l-marker
+            ref="myGeo"
+            :lat-lng="marker"
           />
-        </l-popup>
-        <l-icon
-          :icon-anchor="pointMarkerAnchor"
-        >
-          <img
-            width="24"
-            src="../assets/gps.svg"
-            alt="marker"
-          >
-        </l-icon>
-      </l-marker>
-      <l-tile-layer :url="url" />
-    </l-map>
-    <controls />
-    <map-sidebar
-      :style="'max-height: 85vh; top: 10px; position: absolute'"
-    >
-      <v-list
-        v-if="pointsReady"
-        nav
-      >
-        <v-subheader>Список контрольный точек</v-subheader>
-        <div
-          v-if="pointsLoad"
-          class="loadingPoints"
-          style="display: flex"
-        >
-          <v-progress-circular
-            indeterminate
-            color="primary"
-            style="margin: auto"
+          <l-circle
+            v-if="showPntCircle"
+            :lat-lng="[choosePnt.latitude,choosePnt.longtitude]"
+            :radius="choosePnt.radius ? parseInt(choosePnt.radius, 10) : 0"
+            :color="'red'"
           />
-        </div>
-        <v-list
-          v-else
-          color="white"
-        >
-          <v-list-group
-            v-for="(geozone, i) in filteredGeozones"
+          <l-marker
+            v-for="(point, i) in points"
             :key="i"
-            no-action
-            color="primary"
-            prepend-icon="mdi-grain"
+            :ref="'point' + point.id"
+            :lat-lng="[point.latitude, point.longtitude]"
+            @click="chooseNewPnt(point.id)"
           >
-            <template v-slot:activator>
-              <v-list-item-title>{{ geozone.name }}</v-list-item-title>
-            </template>
-            <div
-              v-for="(point, j) in points.filter(p => p.geozone_id ===geozone.id)"
-              :key="j"
-              class="ct-list-items-wrapper"
+            <l-popup
+              v-if="point.id == choosePntId"
+              :options="{minWidth: '531px', closeButton: false, className: 'custom'}"
+              @ready="popupReady(point.id)"
             >
-              <v-list-item
-                v-if="point.id != -2"
-                @click="chooseNewPnt(point.id)"
+              <c-tbubble
+                :point="choosePnt"
+                :is-change-mode="point.id != -2"
+                @close="chooseNewPnt(-1)"
+                @refresh="reloadPoints"
+              />
+            </l-popup>
+            <l-icon
+              :icon-anchor="pointMarkerAnchor"
+            >
+              <img
+                width="24"
+                src="../assets/gps.svg"
+                alt="marker"
               >
-                <v-list-item-content>
-                  <v-list-item-title v-text="`${point.name} (${point.direction_id ? 'Обратно' : 'Туда'})`" />
-                </v-list-item-content>
-              </v-list-item>
+            </l-icon>
+          </l-marker>
+          <l-tile-layer :url="url" />
+        </l-map>
+        <controls />
+      </v-col>
+      <v-col
+        cols="3"
+        lg="3"
+        md="5"
+        sm="4"
+        class="map-sidebar-col-left"
+      >
+        <map-sidebar
+          :style="'max-height: 85vh; top: 10px; position: absolute'"
+        >
+          <v-list
+            v-if="pointsReady"
+            nav
+          >
+            <v-subheader>Список контрольный точек</v-subheader>
+            <div
+              v-if="pointsLoad"
+              class="loadingPoints"
+              style="display: flex"
+            >
+              <v-progress-circular
+                indeterminate
+                color="primary"
+                style="margin: auto"
+              />
             </div>
-          </v-list-group>
-        </v-list>
-      </v-list>
-    </map-sidebar>
-  </div>
+            <v-list
+              v-else
+              color="white"
+            >
+              <v-list-group
+                v-for="(geozone, i) in filteredGeozones"
+                :key="i"
+                no-action
+                color="primary"
+                prepend-icon="mdi-grain"
+              >
+                <template v-slot:activator>
+                  <v-list-item-title>{{ geozone.name }}</v-list-item-title>
+                </template>
+                <div
+                  v-for="(point, j) in points.filter(p => p.geozone_id === geozone.id)"
+                  :key="j"
+                  class="ct-list-items-wrapper"
+                >
+                  <v-list-item
+                    v-if="point.id != -2"
+                    @click="chooseNewPnt(point.id)"
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title v-text="`${point.name} (${point.direction_id ? 'Обратно' : 'Туда'})`" />
+                    </v-list-item-content>
+                  </v-list-item>
+                </div>
+              </v-list-group>
+            </v-list>
+          </v-list>
+        </map-sidebar>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

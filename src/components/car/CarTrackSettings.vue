@@ -26,7 +26,12 @@
             cols="12"
             lg="12"
           >
-            <v-color-picker v-model="chooseTrackToChange.color" />
+            <v-color-picker
+              v-model="chooseTrackToChange.color"
+              hide-canvas
+              show-swatches
+              width="100%"
+            />
           </v-col>
         </v-row>
         <v-row>
