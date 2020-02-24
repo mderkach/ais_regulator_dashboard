@@ -5,10 +5,11 @@
     app
     dark
     flat
-    height="88"
+    height="75"
+    class="grey darken-3"
   >
     <!-- tertiary--text это раньше было тут -->
-    <v-toolbar-title class=" font-weight-light align-self-center">
+    <v-toolbar-title class="font-weight-light align-self-center">
       <v-btn
         v-if="responsive"
         dark
@@ -93,7 +94,7 @@
           </v-icon>
         </v-btn>
       </v-row>
-    </v-toolbar-items> -->
+    </v-toolbar-items>-->
   </v-app-bar>
 </template>
 

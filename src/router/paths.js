@@ -8,8 +8,8 @@ export default [
   {
     path: '',
     // Relative to /src/views
-    view: 'Map',
-    name: 'Карта',
+    view: 'Client',
+    name: 'Клиент',
   },
   {
     path: '/monitor-car',

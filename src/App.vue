@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <core-app-bar />
+    <core-app-bar v-if="$route.name !== 'Клиент'" />
 
-    <core-drawer />
+    <core-drawer v-if="$route.name !== 'Клиент'" />
 
     <core-view />
   </v-app>

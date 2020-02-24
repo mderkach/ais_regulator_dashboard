@@ -19,3 +19,9 @@
     },
   }
 </script>
+
+<style lang="scss">
+#core-view {
+  height: 100%;
+}
+</style>

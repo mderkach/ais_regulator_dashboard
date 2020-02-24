@@ -154,7 +154,7 @@
         <v-col
           cols="12"
           lg="12"
-          justify-self="center"
+          style="justify-self: center"
         >
           <v-checkbox
             v-model="isHour"

@@ -2,7 +2,7 @@
   <div class="map">
     <l-map
       ref="osm"
-      style="height: calc(100vh - 88px); width: 100%"
+      style="height: calc(100vh - 75px); width: 100%"
       :zoom="zoom"
       :center="initialLocation"
       :options="{ zoomControl: false }"
@@ -27,14 +27,12 @@
     components: {
       Controls,
     },
-    data () {
-      return {
-        url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-        initialLocation: [45.044502, 41.969065],
-        marker: [-100, -100],
-        zoom: 13,
-      }
-    },
+    data: () => ({
+      url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      initialLocation: [45.044502, 41.969065],
+      marker: [-100, -100],
+      zoom: 13,
+    }),
     computed: {
       ...mapGetters(['geolocation']),
     },
