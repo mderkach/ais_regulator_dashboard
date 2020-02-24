@@ -80,10 +80,8 @@
 </template>
 
 <script>
-// Utilities
+  // Utilities
   import { mapMutations, mapState } from 'vuex'
-  // eslint-disable-next-line no-unused-vars
-  import { mdiDatabaseEdit, mdiFileDocumentBoxMultiple, mdiAlertBox } from '@mdi/js'
 
   export default {
     props: {
@@ -97,7 +95,7 @@
         {
           to: '/',
           icon: 'mdi-map-marker',
-          text: 'Карта',
+          text: 'Клиентская карта',
         },
         {
           icon: 'mdi-database-edit',

@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="track-change"
-  >
+  <div class="track-change">
     <v-container>
       <v-row>
         <v-col
@@ -13,7 +11,9 @@
           </span>
           <br>
           <span style="font-size: 15px; font-style: italic;font-weight: bold">
-            {{ chooseTrackToChange ? chooseTrackToChange.trackId : "Обработка" }}
+            {{
+              chooseTrackToChange ? chooseTrackToChange.trackId : "Обработка"
+            }}
           </span>
         </v-col>
       </v-row>
@@ -53,9 +53,7 @@
             cols="12"
             lg="12"
           >
-            <v-btn
-              @click="chooseNewTrackToChange(null)"
-            >
+            <v-btn @click="chooseNewTrackToChange(null)">
               Применить
             </v-btn>
           </v-col>
@@ -66,21 +64,16 @@
 </template>
 
 <script>
-
   import { chooseColorFunc } from '../../mixins/chooseColorFunc'
   import { mapGetters, mapMutations } from 'vuex'
 
   export default {
     mixins: [chooseColorFunc],
-    data (vm) {
-      return {
-      }
-    },
+    data: vm => ({}),
     computed: {
       ...mapGetters(['chooseTrackToChange']),
     },
-    watch: {
-    },
+    watch: {},
     mounted: function () {
       this.isOpen = true
     },
@@ -94,17 +87,16 @@
 </script>
 
 <style lang="scss">
-  .track-change {
-    width: 100%;
-    background-color:#424242;
-    border-radius: 5px;
-    text-align: center;
-    padding: 10px;
-    color: white;
+.track-change {
+  width: 100%;
+  background-color: #424242;
+  border-radius: 5px;
+  text-align: center;
+  padding: 10px;
+  color: white;
 
-    &-content {
-      font-size: 18px;
-    }
-
+  &-content {
+    font-size: 18px;
   }
+}
 </style>

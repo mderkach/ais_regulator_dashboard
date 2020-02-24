@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="car-track-picker"
-  >
+  <div class="car-track-picker">
     <v-container>
       <v-row>
         <v-col
@@ -13,7 +11,7 @@
           </span>
           <br>
           <span style="font-size: 15px; font-style: italic;font-weight: bold">
-            {{ chooseCarToTrack ? chooseCarToTrack.num : 'НЕТ ДАННЫХ' }}
+            {{ chooseCarToTrack ? chooseCarToTrack.num : "НЕТ ДАННЫХ" }}
           </span>
         </v-col>
       </v-row>
@@ -168,9 +166,7 @@
           cols="6"
           lg="6"
         >
-          <v-btn
-            @click="getTrack"
-          >
+          <v-btn @click="getTrack">
             Построить
           </v-btn>
         </v-col>
@@ -178,9 +174,7 @@
           cols="6"
           lg="6"
         >
-          <v-btn
-            @click="chooseNewCarToTrack(null)"
-          >
+          <v-btn @click="chooseNewCarToTrack(null)">
             Отмена
           </v-btn>
         </v-col>
@@ -190,7 +184,6 @@
 </template>
 
 <script>
-
   import { mapGetters, mapMutations } from 'vuex'
   import axios from 'axios'
   import { chooseColorFunc } from '../../mixins/chooseColorFunc'
@@ -259,12 +252,8 @@
         } else {
           let fromTime = `${this.hoursFrom}:${this.minutesFrom}`
           let toTime = `${this.hoursTo}:${this.minutesTo}`
-          from = `${fromTime.length > 1 ? fromTime : ''} ${
-            this.date
-          }`
-          to = `${toTime.length > 1 ? toTime : ''} ${
-            this.date2
-          }`
+          from = `${fromTime.length > 1 ? fromTime : ''} ${this.date}`
+          to = `${toTime.length > 1 ? toTime : ''} ${this.date2}`
         }
 
         this.fetchTrack(from, to)
@@ -292,88 +281,94 @@
             })
           })
       },
-      ...mapMutations(['setNewCarMapCenter', 'chooseNewCarToTrack', 'addNewTrack']),
+      ...mapMutations([
+        'setNewCarMapCenter',
+        'chooseNewCarToTrack',
+        'addNewTrack',
+      ]),
     },
   }
 </script>
 
 <style lang="scss">
-  .car-track-picker {
-    width: 100%;
-    background-color:#424242;
-    border-radius: 5px;
-    text-align: center;
-    padding: 10px;
-    color: white;
+.car-track-picker {
+  width: 100%;
+  background-color: #424242;
+  border-radius: 5px;
+  text-align: center;
+  padding: 10px;
+  color: white;
 
-    &-title {
-      margin-bottom: 0;
+  &-title {
+    margin-bottom: 0;
+  }
+
+  &-content {
+    font-size: 18px;
+    transition: height ease-in-out 0.3s;
+
+    input[type="number"] {
+      text-align: center;
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+      }
     }
 
-    &-content {
+    .v-text-field,
+    .v-input__slot {
+      padding: 0;
+      margin: 0;
       font-size: 18px;
-      transition: height ease-in-out 0.3s;
-
-      input[type=number] {
-        text-align: center;
-
-        &::-webkit-outer-spin-button,
-        &::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-        }
-
-      }
-      .v-text-field, .v-input__slot{
-        padding: 0;
-        margin: 0;
-        font-size:18px;
-        max-width: 120px;
-        display: inline-block;
-      }
-
-      .calendar-button {
-          position: absolute;
-          top: 9px;
-          right: 14px;
-          z-index: 600;
-      }
-
-      .datepicker-input {
-
-        &-time {
-          // border: 1px solid white;
-          width: 30px;
-          font-size: 20px;
-          position: relative;
-
-          &::before {
-            content: 'awdaw';
-            bottom: -1px;
-            left: 0;
-            position: absolute;
-            border-color: white;
-            border-style: solid;
-            width: 100%;
-          }
-
-          &:last-of-type{
-            margin-right: 10px;
-          }
-        }
-
-        &-wrapper{
-          display: flex;
-          font-size: 25px;
-
-          & .v-btn, input {
-            align-self: center;
-          }
-        }
-      }
+      max-width: 120px;
+      display: inline-block;
     }
 
-    .v-text-field__details, .v-messages{
-      display: none;
+    .calendar-button {
+      position: absolute;
+      top: 9px;
+      right: 14px;
+      z-index: 600;
+    }
+
+    .datepicker-input {
+      &-time {
+        // border: 1px solid white;
+        width: 30px;
+        font-size: 20px;
+        position: relative;
+
+        &::before {
+          content: "awdaw";
+          bottom: -1px;
+          left: 0;
+          position: absolute;
+          border-color: white;
+          border-style: solid;
+          width: 100%;
+        }
+
+        &:last-of-type {
+          margin-right: 10px;
+        }
+      }
+
+      &-wrapper {
+        display: flex;
+        font-size: 25px;
+
+        & .v-btn,
+        input {
+          align-self: center;
+        }
+      }
     }
   }
+
+  .v-text-field__details,
+  .v-messages {
+    display: none;
+  }
+}
 </style>

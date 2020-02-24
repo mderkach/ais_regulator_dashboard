@@ -9,9 +9,7 @@
       :key="i"
       class="car"
     >
-      <v-expansion-panel-header
-        @click="cartCenter(car.vehicleId)"
-      >
+      <v-expansion-panel-header @click="cartCenter(car.vehicleId)">
         {{ car.stateNumber }}
       </v-expansion-panel-header>
       <v-expansion-panel-content>
@@ -27,7 +25,7 @@
           text
           icon
           color="white"
-          @click="chooseTrack({id: car.vehicleId, num: car.stateNumber})"
+          @click="chooseTrack({ id: car.vehicleId, num: car.stateNumber })"
         >
           <v-icon>mdi-chart-timeline-variant</v-icon>
         </v-btn>
@@ -40,7 +38,10 @@
         </v-btn>
         <div
           class="trackBar"
-          :class="{'trackBar-first-active': getCarTracks(car.vehicleId).length == 1,'trackBar-active': getCarTracks(car.vehicleId).length > 1}"
+          :class="{
+            'trackBar-first-active': getCarTracks(car.vehicleId).length == 1,
+            'trackBar-active': getCarTracks(car.vehicleId).length > 1
+          }"
         >
           <v-chip
             v-for="(track, trackNo) in getCarTracks(car.vehicleId)"
@@ -59,7 +60,6 @@
 </template>
 
 <script>
-
   import { mapGetters, mapMutations } from 'vuex'
 
   export default {
@@ -73,11 +73,9 @@
         default: new Array([]),
       },
     },
-    data () {
-      return {
-        isOpen: false,
-      }
-    },
+    data: () => ({
+      isOpen: false,
+    }),
     computed: {
       ...mapGetters(['carsGeo', 'getCarTracks']),
     },
@@ -99,7 +97,8 @@
         'setNewCarMapCenter',
         'chooseNewCarToTrack',
         'deleteTrack',
-        'chooseNewTrackToChange']),
+        'chooseNewTrackToChange',
+      ]),
     },
   }
 </script>
@@ -108,6 +107,7 @@
 .v-expansion-panel-content__wrap {
   padding: 5px 15px;
 }
+
 .car {
   .trackBar {
     transition: opacity ease-in-out 0.5s;
@@ -115,12 +115,12 @@
     width: 110%;
     margin-left: -2px;
 
-    &-first-active{
+    &-first-active {
       margin-top: 10px;
       height: auto;
     }
 
-    &-active{
+    &-active {
       margin-top: 10px;
       height: auto;
     }

@@ -8,14 +8,10 @@
         <v-container fluid>
           <v-row>
             <v-col cols="12">
-              <span
-                v-if="isChangeMode"
-              >
+              <span v-if="isChangeMode">
                 Изменение точки маршрута
               </span>
-              <span
-                v-else
-              >
+              <span v-else>
                 Создание точки маршрута
               </span>
             </v-col>
@@ -114,62 +110,58 @@
         }),
       },
     },
-    data () {
-      return {
-        inputs: [
-          {
-            name: 'name',
-            label: 'Имя остановки',
-            isSelect: false,
-          },
-          {
-            name: 'type',
-            label: 'Тип КТ',
-            isSelect: true,
-            options: ['Остановка', 'Участок дороги'],
-          },
-          {
-            name: 'direction',
-            label: 'Направление',
-            isSelect: true,
-            options: ['Прямое', 'Обратное'],
-          },
-          {
-            name: 'longtitude',
-            label: 'Широта',
-            isSelect: false,
-          },
-          {
-            name: 'latitude',
-            label: 'Долгота',
-            isSelect: false,
-          },
-          {
-            name: 'radius',
-            label: 'Радиус',
-            isSelect: false,
-          },
-          {
-            name: 'address',
-            label: 'Адрес',
-            isSelect: false,
-          },
-          {
-            name: 'geozone_id',
-            label: 'Геозона',
-            isSelect: false,
-            isGeozone: true,
-          },
-        ],
-        geozones: [],
-      }
-    },
+    data: () => ({
+      inputs: [
+        {
+          name: 'name',
+          label: 'Имя остановки',
+          isSelect: false,
+        },
+        {
+          name: 'type',
+          label: 'Тип КТ',
+          isSelect: true,
+          options: ['Остановка', 'Участок дороги'],
+        },
+        {
+          name: 'direction',
+          label: 'Направление',
+          isSelect: true,
+          options: ['Прямое', 'Обратное'],
+        },
+        {
+          name: 'longtitude',
+          label: 'Широта',
+          isSelect: false,
+        },
+        {
+          name: 'latitude',
+          label: 'Долгота',
+          isSelect: false,
+        },
+        {
+          name: 'radius',
+          label: 'Радиус',
+          isSelect: false,
+        },
+        {
+          name: 'address',
+          label: 'Адрес',
+          isSelect: false,
+        },
+        {
+          name: 'geozone_id',
+          label: 'Геозона',
+          isSelect: false,
+          isGeozone: true,
+        },
+      ],
+      geozones: [],
+    }),
     computed: {
       ...mapGetters(['sessionID']),
     },
-    created: function () {
-
-    },
+    created: function () {},
     methods: {
       createMarker: function (ev) {
         axios
@@ -214,7 +206,7 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .point {
   &-buble {
     &__wrapper {

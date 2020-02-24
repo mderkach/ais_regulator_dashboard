@@ -5,6 +5,7 @@ import store from './store'
 import './plugins'
 import vuetify from './plugins/vuetify'
 import { sync } from 'vuex-router-sync'
+import core from 'core-js'
 
 sync(store, router)
 
@@ -12,6 +13,7 @@ Vue.config.productionTip = false
 export const userLocationBus = new Vue()
 
 new Vue({
+  core,
   router,
   store,
   vuetify,

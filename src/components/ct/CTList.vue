@@ -15,11 +15,9 @@
         default: new Array([]),
       },
     },
-    data () {
-      return {
-        isOpen: false,
-      }
-    },
+    data: () => ({
+      isOpen: false,
+    }),
     mounted: function () {
       this.isOpen = true
     },
