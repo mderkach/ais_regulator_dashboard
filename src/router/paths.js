@@ -12,6 +12,11 @@ export default [
     name: 'Клиент',
   },
   {
+    path: '/login',
+    view: 'Login',
+    name: 'Вход',
+  },
+  {
     path: '/monitor-car',
     name: 'Доступные транспортные стредства',
     view: 'Monitoring--Car',

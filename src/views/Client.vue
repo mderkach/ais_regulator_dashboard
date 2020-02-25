@@ -7,6 +7,7 @@
       <route-transport />
       <transport-switch />
     </div>
+    <login />
   </div>
 </template>
 
@@ -16,6 +17,8 @@
   import routePath from '../components/route/routeFindPath'
   import routeTransport from '../components/route/routeFindTransport'
   import transportSwitch from '../components/route/routeTransportSwitch'
+  import login from '../components/controls/ContorlsLogin'
+
   export default {
     name: 'Client',
     components: {
@@ -24,6 +27,7 @@
       routePath,
       routeTransport,
       transportSwitch,
+      login,
     },
   }
 </script>

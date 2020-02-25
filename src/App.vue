@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <core-app-bar v-if="$route.name !== 'Клиент'" />
+    <core-app-bar v-if="$route.name !== 'Клиент' && $route.name !== 'Вход'" />
 
-    <core-drawer v-if="$route.name !== 'Клиент'" />
+    <core-drawer v-if="$route.name !== 'Клиент' && $route.name !== 'Вход'" />
 
     <core-view />
   </v-app>
@@ -32,6 +32,6 @@
 
 <style lang="scss">
 html {
-  overflow-y: auto
+  overflow-y: auto !important;
 }
 </style>
