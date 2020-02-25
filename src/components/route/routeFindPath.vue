@@ -36,7 +36,7 @@
           >
             <v-col
               cols="12"
-              class="pt-0"
+              class="pt-0 pl-0"
             >
               <v-text-field
                 v-model="from"
@@ -50,7 +50,7 @@
             </v-col>
             <v-col
               cols="12"
-              class="pb-0"
+              class="pb-0 pl-0"
             >
               <v-text-field
                 v-model="to"
