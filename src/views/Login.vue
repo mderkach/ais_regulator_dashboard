@@ -35,9 +35,6 @@
 <script>
   export default {
     name: 'Login',
-    data: () => ({
-      bg: require('../assets/login.jpg'),
-    }),
   }
 </script>
 
