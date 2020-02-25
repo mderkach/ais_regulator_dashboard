@@ -7,7 +7,7 @@
   >
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title class="headline mb-1">
+        <v-list-item-title class="body-1">
           Поиск транспорта
         </v-list-item-title>
       </v-list-item-content>
@@ -43,7 +43,7 @@
 .routeFind {
   &__transport {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     background-color: #21242B;
     color: #fff;
   }

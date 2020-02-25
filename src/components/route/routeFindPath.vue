@@ -7,7 +7,7 @@
   >
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title class="headline mb-1">
+        <v-list-item-title class="body-1">
           Построение маршрута
         </v-list-item-title>
       </v-list-item-content>
@@ -15,7 +15,10 @@
     <v-form>
       <v-container>
         <v-row>
-          <v-col cols="1">
+          <v-col
+            cols="2"
+            class="py-0"
+          >
             <v-btn
               class="routeFind__toggle"
               color="#FF7733"
@@ -28,11 +31,12 @@
             </v-btn>
           </v-col>
           <v-col
-            cols="11"
+            cols="10"
             class="pa-0"
           >
             <v-col
               cols="12"
+              class="pt-0"
             >
               <v-text-field
                 v-model="from"
@@ -46,6 +50,7 @@
             </v-col>
             <v-col
               cols="12"
+              class="pb-0"
             >
               <v-text-field
                 v-model="to"
@@ -84,7 +89,7 @@
 .routeFind {
   &__path {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     background-color: #21242B;
     color: #fff;
   }

@@ -5,6 +5,7 @@
     <div class="client__wrapper">
       <route-path />
       <route-transport />
+      <transport-switch />
     </div>
   </div>
 </template>
@@ -14,7 +15,7 @@
   import Controls from '../components/controls/Сontrols'
   import routePath from '../components/route/routeFindPath'
   import routeTransport from '../components/route/routeFindTransport'
-
+  import transportSwitch from '../components/route/routeTransportSwitch'
   export default {
     name: 'Client',
     components: {
@@ -22,6 +23,7 @@
       Controls,
       routePath,
       routeTransport,
+      transportSwitch,
     },
   }
 </script>
