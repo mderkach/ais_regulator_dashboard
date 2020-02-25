@@ -2,7 +2,10 @@
   <div class="map">
     <l-map />
     <controls />
-    <route-path />
+    <div class="client__wrapper">
+      <route-path />
+      <route-transport />
+    </div>
   </div>
 </template>
 
@@ -10,6 +13,7 @@
   import Map from '../components/map/Map'
   import Controls from '../components/controls/Сontrols'
   import routePath from '../components/route/routeFindPath'
+  import routeTransport from '../components/route/routeFindTransport'
 
   export default {
     name: 'Client',
@@ -17,10 +21,17 @@
       'l-map': Map,
       Controls,
       routePath,
+      routeTransport,
     },
   }
 </script>
 
 <style>
-
+.client__wrapper {
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  z-index: 500;
+  width: 460px;
+}
 </style>

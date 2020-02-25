@@ -18,9 +18,9 @@
           <v-col cols="1">
             <v-btn
               class="routeFind__toggle"
-              tile
               color="#FF7733"
               dark
+              @click="switchRoute(from, to)"
             >
               <v-icon style="transform: rotate(-45deg)">
                 mdi-arrow-expand
@@ -35,6 +35,7 @@
               cols="12"
             >
               <v-text-field
+                v-model="from"
                 label="Откуда"
                 outlined
                 clearable
@@ -47,6 +48,7 @@
               cols="12"
             >
               <v-text-field
+                v-model="to"
                 label="Куда"
                 outlined
                 clearable
@@ -65,19 +67,26 @@
 <script>
   export default {
     name: 'RouteFindPath',
+    data: () => ({
+      from: '',
+      to: '',
+    }),
+    methods: {
+      switchRoute (from, to) {
+        this.to = from
+        this.from = to
+      },
+    },
   }
 </script>
 
 <style lang="scss" scoped>
 .routeFind {
   &__path {
-    position: absolute;
-    top: 10px;
-    left: 30px;
     width: 100%;
+    margin-bottom: 20px;
     background-color: #21242B;
     color: #fff;
-    z-index: 500;
   }
 
   &__toggle {
