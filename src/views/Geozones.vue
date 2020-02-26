@@ -7,7 +7,10 @@
         <map-sidebar
           :class="'side-active classifiers-sidebar'"
         >
-          <v-list nav>
+          <v-list
+            nav
+            dense
+          >
             <v-toolbar flat>
               <v-toolbar-title>Список геозон</v-toolbar-title>
               <v-spacer />

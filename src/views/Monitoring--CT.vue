@@ -74,6 +74,7 @@
           <v-list
             v-if="pointsReady"
             nav
+            dense
           >
             <v-subheader>Список контрольный точек</v-subheader>
             <div

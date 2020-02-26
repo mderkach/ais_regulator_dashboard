@@ -90,6 +90,7 @@
             v-if="pointsReady"
             :color="mode === 1 ? 'green' : mode === 2 ? 'red' : ''"
             nav
+            dense
           >
             <v-subheader
               :dark="mode != 0"
